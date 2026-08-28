@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu vidriera digital — Catálogos web a medida para tu comercio</title>
+<meta name="description" content="Catálogo, carrito, cobros y panel de administración en una sola página, adaptada a tu rubro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6EE;
+    --linen:#F1E9DA;
+    --ink:#211D1A;
+    --ink-soft:#5B554C;
+    --coral:#FF5A36;
+    --coral-dark:#E14523;
+    --teal:#1F6F6B;
+    --mostaza:#F2B705;
+    --line: rgba(33,29,26,0.14);
+  }
+  *{box-sizing:border-box;}
+  button{font:inherit;}
+  html{scroll-behavior:smooth;}
+  section[id]{scroll-margin-top:84px;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.02em;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  a{color:inherit;}
+  img,svg{display:block;}
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,246,238,0.9);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;}
+  .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--coral);}
+  .nav-links{display:flex;gap:28px;font-size:0.92rem;color:var(--ink-soft);}
+  .nav-links a{text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--ink);}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 20px;border-radius:999px;
+    font-weight:600;font-size:0.92rem;
+    text-decoration:none;border:none;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-coral{background:var(--coral);color:#fff;box-shadow:0 6px 16px rgba(255,90,54,0.35);}
+  .btn-coral:hover{background:var(--coral-dark);}
+  .btn-insta{background:#B23A8E;color:#fff;box-shadow:0 6px 16px rgba(178,58,142,0.3);}
+  .btn-insta:hover{background:#8E2F73;}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:72px 0 40px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;} }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:0.78rem;
+    color:var(--teal);background:rgba(31,111,107,0.09);
+    padding:6px 12px;border-radius:999px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:'●';color:var(--coral);}
+  h1.headline{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.06;}
+  h1.headline em{font-style:italic;color:var(--coral);}
+  .sub{margin-top:20px;font-size:1.08rem;color:var(--ink-soft);max-width:46ch;}
+  .hero-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-note{margin-top:18px;font-size:0.85rem;color:var(--ink-soft);}
+
+  /* phone demo */
+  .phone{
+    width:270px;margin:0 auto;
+    background:#fff;border-radius:34px;
+    border:8px solid var(--ink);
+    box-shadow:0 30px 60px -20px rgba(33,29,26,0.35);
+    overflow:hidden;transform:rotate(2deg);
+  }
+  .phone-head{padding:16px 16px 12px;transition:background .6s ease;}
+  .phone-brand{font-family:'Fraunces',serif;font-weight:600;color:#fff;font-size:1.05rem;transition:color .6s ease;}
+  .phone-tag{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:rgba(255,255,255,0.85);margin-top:2px;}
+  .phone-pills{display:flex;gap:6px;padding:10px 14px;overflow:hidden;}
+  .pill{font-size:0.62rem;padding:5px 10px;border-radius:999px;background:var(--linen);color:var(--ink-soft);white-space:nowrap;font-family:'Inter',sans-serif;}
+  .pill.active{background:var(--ink);color:#fff;}
+  .phone-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 14px 16px;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px;}
+  .card .ph{height:44px;border-radius:6px;margin-bottom:6px;transition:background .6s ease;}
+  .card .nm{font-size:0.6rem;font-weight:600;}
+  .card .pr{font-size:0.62rem;font-family:'JetBrains Mono',monospace;color:var(--coral);margin-top:2px;}
+  .phone-caption{text-align:center;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--ink-soft);}
+  .phone-caption b{color:var(--ink);}
+
+  /* ---------- SECTION BASE ---------- */
+  section{padding:76px 0;}
+  .section-linen{background:var(--linen);}
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--coral);margin-bottom:10px;}
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head h2{font-size:clamp(1.7rem,3.2vw,2.3rem);}
+  .section-head p{margin-top:14px;color:var(--ink-soft);font-size:1.02rem;}
+
+  /* ---------- PROBLEMAS (tickets) ---------- */
+  .tickets{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:820px){ .tickets{grid-template-columns:1fr;} }
+  .ticket{
+    background:#fff;border-radius:6px;padding:24px 22px;
+    border:1px solid var(--line);
+    background-image:repeating-linear-gradient(90deg, transparent, transparent 6px, var(--paper) 6px, var(--paper) 12px);
+    background-position:bottom;background-size:100% 1px;background-repeat:no-repeat;
+    position:relative;
+  }
+  .ticket:nth-child(2){transform:rotate(-0.6deg);}
+  .ticket:nth-child(3){transform:rotate(0.6deg);}
+  .ticket .num{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--ink-soft);}
+  .ticket h3{font-size:1.08rem;margin-top:10px;}
+  .ticket p{margin-top:10px;color:var(--ink-soft);font-size:0.94rem;}
+
+  /* ---------- HERRAMIENTAS ---------- */
+  .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  @media (max-width:900px){ .tools{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .tools{grid-template-columns:1fr;} }
+  .tool{background:var(--paper);padding:28px 24px;}
+  .tool-icon{width:38px;height:38px;margin-bottom:16px;}
+  .tool h3{font-size:1.02rem;margin-bottom:8px;}
+  .tool p{font-size:0.9rem;color:var(--ink-soft);}
+  .tool .use{
+    margin-top:12px;font-size:0.78rem;color:var(--teal);
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* ---------- ADAPTACIONES ---------- */
+  .rubros{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media (max-width:900px){ .rubros{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .rubros{grid-template-columns:1fr;} }
+  .rubro{
+    border-radius:16px;padding:22px;color:#fff;min-height:150px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    position:relative;overflow:hidden;
+  }
+  .rubro::after{content:'';position:absolute;right:-30px;bottom:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.12);}
+  .rubro .icon{font-size:1.6rem;}
+  .rubro h3{font-size:1.05rem;color:#fff;}
+  .rubro span{font-family:'JetBrains Mono',monospace;font-size:0.72rem;opacity:0.85;}
+
+  /* ---------- CASO REAL ---------- */
+  .caso{
+    display:grid;grid-template-columns:0.9fr 1.1fr;gap:44px;align-items:center;
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:36px;
+  }
+  @media (max-width:820px){ .caso{grid-template-columns:1fr;} }
+  .caso-shot{
+    background:linear-gradient(160deg,#FBD8E4,#CDEDE8);
+    border-radius:14px;padding:26px;color:var(--ink);
+    font-family:'Fraunces',serif;
+  }
+  .caso-shot .badge{font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:rgba(255,255,255,0.6);display:inline-block;padding:4px 10px;border-radius:999px;margin-bottom:14px;}
+  .caso-shot h3{font-size:1.5rem;}
+  .caso ul{padding-left:18px;margin:18px 0;color:var(--ink-soft);font-size:0.95rem;}
+  .caso li{margin-bottom:8px;}
+
+  /* ---------- COMO FUNCIONA ---------- */
+  .pasos{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:paso;}
+  @media (max-width:900px){ .pasos{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .pasos{grid-template-columns:1fr;} }
+  .paso{position:relative;padding-top:8px;}
+  .paso .n{
+    font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--coral);
+    border:1px solid var(--coral);border-radius:999px;width:34px;height:34px;
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  }
+  .paso h3{font-size:1rem;margin-bottom:8px;}
+  .paso p{font-size:0.9rem;color:var(--ink-soft);}
+
+  /* ---------- PLANES ---------- */
+  .planes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+  @media (max-width:760px){ .planes{grid-template-columns:1fr;} }
+  .plan{background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px;position:relative;}
+  .plan.destacado{border:2px solid var(--coral);}
+  .plan .tag{position:absolute;top:-12px;right:24px;background:var(--coral);color:#fff;font-family:'JetBrains Mono',monospace;font-size:0.68rem;padding:5px 12px;border-radius:999px;}
+  .plan h3{font-size:1.2rem;}
+  .plan .precio{font-family:'JetBrains Mono',monospace;font-size:1.8rem;margin:14px 0 4px;color:var(--ink);}
+  .plan .precio span{font-size:0.85rem;color:var(--ink-soft);font-family:'Inter',sans-serif;}
+  .plan ul{list-style:none;padding:0;margin:20px 0;}
+  .plan li{padding:8px 0;border-top:1px dashed var(--line);font-size:0.92rem;color:var(--ink-soft);}
+  .plan li:first-child{border-top:none;}
+  .plan li::before{content:'✓ ';color:var(--teal);font-weight:700;}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:760px;}
+  .faq-item{border-bottom:1px solid var(--line);padding:20px 0;}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;font-size:1rem;}
+  .faq-q .plus{font-family:'JetBrains Mono',monospace;color:var(--coral);transition:transform .2s;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;color:var(--ink-soft);font-size:0.94rem;}
+  .faq-item.open .faq-a{max-height:220px;margin-top:12px;}
+
+  /* ---------- CTA FINAL ---------- */
+  .cta-final{
+    background:var(--ink);color:var(--paper);border-radius:24px;
+    padding:56px 40px;text-align:center;
+  }
+  .cta-final h2{color:#fff;font-size:clamp(1.6rem,3.6vw,2.4rem);}
+  .cta-final p{color:rgba(250,246,238,0.75);margin-top:14px;max-width:52ch;margin-left:auto;margin-right:auto;}
+  .cta-final .hero-actions{justify-content:center;margin-top:28px;}
+
+  footer{padding:36px 0;text-align:center;font-size:0.82rem;color:var(--ink-soft);}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.show{opacity:1;transform:none;}
+
+  /* ---------- MODAL "QUÉ INCLUYE" ---------- */
+  .modal-overlay{position:fixed;inset:0;background:rgba(33,29,26,0.62);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px;}
+  .modal-overlay.hidden{display:none;}
+  .modal-box{background:var(--paper);border-radius:22px;max-width:920px;width:100%;max-height:88vh;overflow-y:auto;padding:26px;box-shadow:0 40px 80px -20px rgba(0,0,0,0.4);}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+  .modal-head h3{font-size:1.35rem;}
+  .modal-head p{color:var(--ink-soft);font-size:0.9rem;margin-top:6px;}
+  .modal-close{background:var(--linen);border:none;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;color:var(--ink);flex-shrink:0;}
+  .modal-tabs{display:flex;gap:8px;overflow-x:auto;margin-bottom:22px;padding-bottom:6px;}
+  .mtab{white-space:nowrap;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:0.84rem;cursor:pointer;color:var(--ink-soft);}
+  .mtab.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .mpane{display:none;}
+  .mpane.show{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;}
+  @media (max-width:700px){ .mpane.show{grid-template-columns:1fr;} }
+  .mpane h4{font-size:1.1rem;margin-bottom:10px;}
+  .mpane p{color:var(--ink-soft);font-size:0.92rem;}
+  .mock{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;}
+  .mock-dots{display:flex;gap:5px;margin-bottom:12px;}
+  .mock-dots span{width:8px;height:8px;border-radius:50%;background:var(--line);}
+  .mock-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:0.85rem;}
+  .mock-row:last-child{border-bottom:none;}
+  .mock-qty{display:flex;align-items:center;gap:8px;}
+  .mock-qty span{width:22px;height:22px;border-radius:6px;background:var(--linen);display:flex;align-items:center;justify-content:center;font-size:0.75rem;}
+  .mock-total{display:flex;justify-content:space-between;font-weight:700;padding-top:10px;margin-top:6px;border-top:1px solid var(--ink);}
+  .mock-sidebar{display:flex;flex-direction:column;gap:6px;width:110px;flex-shrink:0;}
+  .mock-side-item{font-size:0.72rem;padding:8px 10px;border-radius:8px;color:var(--ink-soft);}
+  .mock-side-item.active{background:var(--coral);color:#fff;font-weight:600;}
+  .mock-admin{display:flex;gap:14px;}
+  .mock-field{font-size:0.72rem;color:var(--ink-soft);margin-bottom:4px;}
+  .mock-input{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:0.78rem;margin-bottom:10px;color:var(--ink-soft);}
+  .mock-btn{background:var(--coral);color:#fff;border-radius:8px;text-align:center;padding:8px;font-size:0.78rem;font-weight:600;}
+  .mock-receipt{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px;transform:rotate(-1.2deg);position:relative;font-family:'JetBrains Mono',monospace;}
+  .mock-receipt::before{content:'';position:absolute;top:-6px;left:0;right:0;height:12px;background:repeating-linear-gradient(90deg,var(--paper) 0 6px, transparent 6px 12px);}
+  .mock-r-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+  .mock-r-head .logo-dot{width:26px;height:26px;border-radius:50%;background:var(--coral);}
+  .mock-r-head b{font-family:'Fraunces',serif;font-size:0.95rem;}
+  .mock-r-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:5px 0;border-bottom:1px dotted var(--line);}
+  .mock-stamp{position:absolute;right:14px;bottom:14px;border:2px solid var(--teal);color:var(--teal);font-size:0.62rem;padding:4px 10px;border-radius:6px;transform:rotate(-8deg);font-weight:700;}
+  .mock-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .mock-stat{border-radius:12px;padding:12px;color:#fff;font-family:'JetBrains Mono',monospace;}
+  .mock-stat span{display:block;font-size:0.6rem;opacity:0.85;font-family:'Inter',sans-serif;}
+  .mock-bar-row{margin-bottom:8px;}
+  .mock-bar-label{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--ink-soft);margin-bottom:3px;}
+  .mock-bar-track{background:var(--linen);border-radius:999px;height:7px;overflow:hidden;}
+  .mock-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--coral));border-radius:999px;}
+  .mock-noti{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;}
+  .mock-noti .bell{font-size:1.1rem;}
+  .mock-noti b{font-size:0.82rem;}
+  .mock-noti p{margin:2px 0 0;font-size:0.75rem;}
+  .mock-share{display:inline-flex;align-items:center;gap:8px;background:var(--linen);border-radius:999px;padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--teal);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <div class="logo"><span class="dot"></span> Vidriera Digital</div>
+    <nav class="nav-links">
+      <a href="#herramientas">Herramientas</a>
+      <a href="#rubros">Para tu rubro</a>
+      <a href="#caso">Caso real</a>
+      <a href="#planes">Planes</a>
+      <a href="#faq">Preguntas</a>
+    </nav>
+    <a class="btn btn-coral" href="https://wa.me/549XXXXXXXXXX?text=Hola!%20Quiero%20info%20sobre%20la%20p%C3%A1gina%20web%20para%20mi%20negocio" target="_blank">Pedir demo</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal show">
+      <span class="eyebrow">hecho a medida · funciona desde el celular</span>
+      <h1 class="headline">Tu negocio ya tiene productos.<br>Ahora dale una <em>vidriera</em> que nunca cierra.</h1>
+      <p class="sub">Una página web con catálogo, carrito, cobros y panel de administración — pensada para que la manejes vos, sin depender de nadie, desde el celular.</p>
+      <div class="hero-actions">
+        <a class="btn btn-coral" href="https://wa.me/549XXXXXXXXXX?text=Hola!%20Quiero%20info%20sobre%20la%20p%C3%A1gina%20web%20para%20mi%20negocio" target="_blank">💬 Contame tu rubro</a>
+        <a class="btn btn-insta" href="https://instagram.com/TU_USUARIO" target="_blank">📷 Escribinos por Instagram</a>
+        <button class="btn btn-ghost" type="button" onclick="abrirModalHerr()">Ver qué incluye</button>
+      </div>
+      <p class="hero-note">Ferretería, kiosco, indumentaria, candy bar, peluquería, restaurante... la misma herramienta, con tu cara.</p>
+    </div>
+
+    <div class="reveal show">
+      <div class="phone">
+        <div class="phone-head" id="phoneHead">
+          <div class="phone-brand" id="phoneBrand">Ferretería Sur</div>
+          <div class="phone-tag" id="phoneTag">CATÁLOGO · PEDIDOS · ADMIN</div>
+        </div>
+        <div class="phone-pills">
+          <span class="pill active" id="pillA">Todos</span>
+          <span class="pill" id="pillB">—</span>
+          <span class="pill" id="pillC">—</span>
+        </div>
+        <div class="phone-grid">
+          <div class="card"><div class="ph" id="ph1"></div><div class="nm" id="nm1">Producto</div><div class="pr" id="pr1">$0</div></div>
+          <div class="card"><div class="ph" id="ph2"></div><div class="nm" id="nm2">Producto</div><div class="pr" id="pr2">$0</div></div>
+          <div class="card"><div class="ph" id="ph3"></div><div class="nm" id="nm3">Producto</div><div class="pr" id="pr3">$0</div></div>
+          <div class="card"><div class="ph" id="ph4"></div><div class="nm" id="nm4">Producto</div><div class="pr" id="pr4">$0</div></div>
+        </div>
+      </div>
+      <p class="phone-caption">La misma app, <b>reskineada</b> para cada rubro →</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-linen" id="problemas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Lo que pasa hoy</p>
+      <h2>El WhatsApp se te llena y las cuentas se te complican</h2>
+      <p>Si esto te suena conocido, la página no es un lujo — es una herramienta de trabajo.</p>
+    </div>
+    <div class="tickets">
+      <div class="ticket reveal">
+        <p class="num">TICKET Nº 01</p>
+        <h3>Mandás 40 fotos sueltas por WhatsApp</h3>
+        <p>Y el cliente se pierde entre fotos viejas, precios desactualizados y mensajes de hace tres semanas.</p>
+      </div>
+      <div class="ticket reveal">
+        <p class="num">TICKET Nº 02</p>
+        <h3>No te acordás quién te debe qué</h3>
+        <p>Señas anotadas en un cuaderno, o peor, en la memoria. Un pago se te pasa y es plata que no cobrás.</p>
+      </div>
+      <div class="ticket reveal">
+        <p class="num">TICKET Nº 03</p>
+        <h3>Armar un presupuesto lindo te lleva media hora</h3>
+        <p>Y aun así termina siendo un mensaje de texto que no transmite lo profesional que sos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="herramientas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Qué incluye</p>
+      <h2>Una herramienta por cada parte del negocio</h2>
+      <p>No es solo una vidriera: es catálogo, cobrador y libro de pedidos, todo en el mismo lugar.</p>
+    </div>
+    <div class="tools reveal">
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#1F6F6B" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#1F6F6B" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#1F6F6B" stroke-width="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#1F6F6B" stroke-width="1.6"/></svg>
+        <h3>Catálogo con fotos y categorías</h3>
+        <p>Cargás cada producto con varias fotos, descripción y precio. Tu cliente filtra por categoría y encuentra lo que busca solo.</p>
+        <p class="use">USO → mostrás todo sin mandar una foto por vez</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><path d="M3 5h2l1.6 9.6a2 2 0 0 0 2 1.7h7.8a2 2 0 0 0 2-1.6L20 8H6" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="20" r="1.4" fill="#1F6F6B"/><circle cx="17" cy="20" r="1.4" fill="#1F6F6B"/></svg>
+        <h3>Carrito y pedido con un toque</h3>
+        <p>El cliente arma su pedido, completa sus datos y te llega directo por WhatsApp, ya ordenado y con el total calculado.</p>
+        <p class="use">USO → cero pedidos mal anotados</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="2" stroke="#1F6F6B" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#1F6F6B" stroke-width="1.6"/></svg>
+        <h3>Panel de administración propio</h3>
+        <p>Usuario y contraseña para vos: cargás productos, precios y fotos desde el celular, sin depender de nadie.</p>
+        <p class="use">USO → autonomía total, día a día</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="1.5" stroke="#1F6F6B" stroke-width="1.6"/><path d="M8 8h8M8 12h8M8 16h5" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Estados de pedido</h3>
+        <p>Recibido, en proceso, entregado o rechazado. De un vistazo sabés en qué está cada venta.</p>
+        <p class="use">USO → orden real, sin post-its</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Cobros, señas y recibos</h3>
+        <p>Registrás cada pago, la app calcula solo cuánto te falta cobrar, y generás el recibo en PDF al toque.</p>
+        <p class="use">USO → nunca más "¿cuánto me debía?"</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="1.5" stroke="#1F6F6B" stroke-width="1.6"/><path d="M8 8h5M8 12h8M8 16h4" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="16" r="1" fill="#FF5A36"/></svg>
+        <h3>Presupuestos en PDF con tu logo</h3>
+        <p>Elegís cliente y productos, y te queda un PDF prolijo para mandar por WhatsApp. Da ganas de decir que sí.</p>
+        <p class="use">USO → cerrar ventas más grandes</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><path d="M4 19h16M6 19V9M12 19V5M18 19v-7" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Tablero del mes</h3>
+        <p>Ventas confirmadas, cuánto cobraste, cuánto te deben y qué productos conviene ofrecer más.</p>
+        <p class="use">USO → decisiones con números, no a ojo</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3v4M12 17v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M3 12h4M17 12h4M4.2 19.8L7 17M17 7l2.8-2.8" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Aumento de precios masivo</h3>
+        <p>Subió el costo de todo? Un porcentaje y listo: toda la lista se actualiza sola, redondeada como vos elijas.</p>
+        <p class="use">USO → 5 minutos, no una tarde entera</p>
+      </div>
+      <div class="tool">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none"><path d="M21 12a8 8 0 1 1-3.2-6.4" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round"/><path d="M21 4v5h-5" stroke="#1F6F6B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Notificaciones y compartir</h3>
+        <p>Te avisa cuando entra un pedido nuevo, y cada producto se puede compartir por link directo a quien quieras.</p>
+        <p class="use">USO → te enterás al toque, no cuando entrás a mirar</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-linen" id="rubros">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Se adapta a vos</p>
+      <h2>La misma herramienta, con la cara de tu negocio</h2>
+      <p>Colores, categorías y datos del pedido se arman según cómo trabajás — no al revés.</p>
+    </div>
+    <div class="rubros reveal">
+      <div class="rubro" style="background:linear-gradient(135deg,#2E6F6E,#1F4F4D);">
+        <span class="icon">🔧</span>
+        <div><h3>Ferretería</h3><span>categorías por tipo de material · consulta técnica rápida</span></div>
+      </div>
+      <div class="rubro" style="background:linear-gradient(135deg,#E8862F,#B85F15);">
+        <span class="icon">🧃</span>
+        <div><h3>Kiosco / Almacén</h3><span>combos y ofertas del día · pedido para retirar</span></div>
+      </div>
+      <div class="rubro" style="background:linear-gradient(135deg,#C6558C,#8E2F5F);">
+        <span class="icon">👗</span>
+        <div><h3>Indumentaria</h3><span>talles y colores por variante · looks armados</span></div>
+      </div>
+      <div class="rubro" style="background:linear-gradient(135deg,#FF7A5C,#D9451F);">
+        <span class="icon">🍽️</span>
+        <div><h3>Rotisería / Restô</h3><span>menú del día · pedido con horario de retiro</span></div>
+      </div>
+      <div class="rubro" style="background:linear-gradient(135deg,#7C6BC4,#4B3B93);">
+        <span class="icon">💇</span>
+        <div><h3>Peluquería / Barbería</h3><span>servicios con precio · turnos por WhatsApp</span></div>
+      </div>
+      <div class="rubro" style="background:linear-gradient(135deg,#E0475B,#A82339);">
+        <span class="icon">🎉</span>
+        <div><h3>Candy bar / Eventos</h3><span>presupuesto para clienta · fecha de evento</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="caso">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">No es una promesa, ya está funcionando</p>
+      <h2>Un caso real, hecho con esta misma base</h2>
+    </div>
+    <div class="caso reveal">
+      <div class="caso-shot">
+        <span class="badge">CASO REAL · CANDY BAR</span>
+        <h3>Dulce Benjamín</h3>
+        <p style="margin-top:10px;color:var(--ink-soft);font-family:'Inter',sans-serif;font-size:0.92rem;">Catálogo, carrito, cobros y presupuestos para un candy bar de eventos.</p>
+      </div>
+      <div>
+        <ul>
+          <li>Catálogo con fotos, categorías y combinaciones de cantidad y precio</li>
+          <li>Pedido con datos del evento, enviado directo por WhatsApp</li>
+          <li>Panel propio para cargar productos, cobros y presupuestos en PDF</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://dulce-benjamin.vercel.app/" target="_blank">Ver el sitio en vivo →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-linen">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Cómo funciona</p>
+      <h2>De la idea a tu página, en cuatro pasos</h2>
+    </div>
+    <div class="pasos reveal">
+      <div class="paso">
+        <div class="n">01</div>
+        <h3>Contamos tu rubro</h3>
+        <p>Qué vendés, cómo tomás pedidos hoy, y qué datos necesitás pedirle al cliente.</p>
+      </div>
+      <div class="paso">
+        <div class="n">02</div>
+        <h3>La armamos a tu medida</h3>
+        <p>Colores, categorías y campos del pedido adaptados a tu negocio, no un molde genérico.</p>
+      </div>
+      <div class="paso">
+        <div class="n">03</div>
+        <h3>Cargamos tus primeros productos</h3>
+        <p>Te dejamos la base lista con ejemplos reales para que sigas cargando vos solo.</p>
+      </div>
+      <div class="paso">
+        <div class="n">04</div>
+        <h3>Te la entregamos funcionando</h3>
+        <p>Con tu usuario y contraseña de administrador, lista para usar desde el primer día.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="planes">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Planes</p>
+      <h2>Empezás simple, sumás lo que necesites</h2>
+      <p>Los dos planes incluyen tu primer mes sin cargo.</p>
+    </div>
+    <div class="planes reveal">
+      <div class="plan">
+        <span class="tag" style="background:var(--teal);">PRIMER MES GRATIS</span>
+        <h3>Catálogo Base</h3>
+        <p class="precio">$10.000 <span>por mes</span></p>
+        <ul>
+          <li>Catálogo con fotos y categorías</li>
+          <li>Carrito / pedido por WhatsApp</li>
+          <li>Panel de administración con login</li>
+          <li>Botones de contacto y compartir</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://wa.me/549XXXXXXXXXX" target="_blank" style="width:100%;justify-content:center;">Consultar</a>
+      </div>
+      <div class="plan destacado">
+        <span class="tag">MÁS ELEGIDO · PRIMER MES GRATIS</span>
+        <h3>Gestión Completa</h3>
+        <p class="precio">$20.000 <span>por mes</span></p>
+        <ul>
+          <li>Todo lo del plan Base</li>
+          <li>Cobros, señas y recibos en PDF</li>
+          <li>Presupuestos con tu logo</li>
+          <li>Tablero del mes y aumento de precios masivo</li>
+          <li>Soporte y ajustes incluidos</li>
+        </ul>
+        <a class="btn btn-coral" href="https://wa.me/549XXXXXXXXXX" target="_blank" style="width:100%;justify-content:center;">Quiero este plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-linen" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Antes de escribirnos</p>
+      <h2>Preguntas frecuentes</h2>
+    </div>
+    <div class="faq reveal">
+      <div class="faq-item">
+        <div class="faq-q">¿Tengo que entender de tecnología para usarla?<span class="plus">+</span></div>
+        <div class="faq-a">No. El panel se maneja como cualquier app: cargás una foto, un precio, y listo. Si sabés usar WhatsApp, sabés usar esto.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Mis clientes tienen que descargar algo?<span class="plus">+</span></div>
+        <div class="faq-a">No. Es una página web normal, se abre desde cualquier link o QR, sin instalar nada.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Puedo pedir cambios después de tenerla lista?<span class="plus">+</span></div>
+        <div class="faq-a">Sí, la página se adapta a medida que tu negocio cambia: nuevas categorías, nuevas herramientas, o ajustes de diseño.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Sirve para mi rubro si no es de los que mencionan?<span class="plus">+</span></div>
+        <div class="faq-a">Sí. La base es la misma para cualquier comercio que venda productos o servicios; lo que cambia es cómo se acomoda a tu forma de trabajar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-final reveal">
+      <h2>Tu vidriera no debería cerrar nunca.</h2>
+      <p>Contanos qué vendés y armamos juntos la página que necesita tu negocio.</p>
+      <div class="hero-actions">
+        <a class="btn btn-coral" href="https://wa.me/549XXXXXXXXXX?text=Hola!%20Quiero%20info%20sobre%20la%20p%C3%A1gina%20web%20para%20mi%20negocio" target="_blank">💬 Escribinos por WhatsApp</a>
+        <a class="btn btn-insta" href="https://instagram.com/TU_USUARIO" target="_blank">📷 Escribinos por Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Vidriera Digital · páginas web hechas a medida para comercios</div>
+</footer>
+
+<div class="modal-overlay hidden" id="modalHerr" onclick="if(event.target===this) cerrarModalHerr()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3>Qué incluye la página</h3>
+        <p>Así se ve cada herramienta en funcionamiento.</p>
+      </div>
+      <button class="modal-close" type="button" onclick="cerrarModalHerr()">✕</button>
+    </div>
+
+    <div class="modal-tabs">
+      <button class="mtab active" type="button" data-tab="catalogo">Catálogo</button>
+      <button class="mtab" type="button" data-tab="carrito">Carrito y pedido</button>
+      <button class="mtab" type="button" data-tab="admin">Panel admin</button>
+      <button class="mtab" type="button" data-tab="cobros">Cobros y PDF</button>
+      <button class="mtab" type="button" data-tab="tablero">Tablero</button>
+      <button class="mtab" type="button" data-tab="notis">Notis y compartir</button>
+    </div>
+
+    <div class="mpane show" data-pane="catalogo">
+      <div class="mock">
+        <div class="mock-dots"><span></span><span></span><span></span></div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <span class="pill active">Todos</span><span class="pill">Herramientas</span><span class="pill">Pinturas</span>
+        </div>
+        <div class="phone-grid" style="padding:0;">
+          <div class="card"><div class="ph" style="background:#2E6F6E33;"></div><div class="nm">Taladro</div><div class="pr">$45.000</div></div>
+          <div class="card"><div class="ph" style="background:#F2B70533;"></div><div class="nm">Pintura 4L</div><div class="pr">$18.500</div></div>
+          <div class="card"><div class="ph" style="background:#FF5A3633;"></div><div class="nm">Set llaves</div><div class="pr">$22.000</div></div>
+          <div class="card"><div class="ph" style="background:#2E6F6E33;"></div><div class="nm">Cinta métrica</div><div class="pr">$4.200</div></div>
+        </div>
+      </div>
+      <div>
+        <h4>Catálogo con fotos y categorías</h4>
+        <p>Cada producto puede tener varias fotos, descripción y distintas combinaciones de cantidad y precio. Tu cliente filtra por categoría o busca por nombre, y encuentra lo que necesita solo.</p>
+      </div>
+    </div>
+
+    <div class="mpane" data-pane="carrito">
+      <div class="mock">
+        <div class="mock-dots"><span></span><span></span><span></span></div>
+        <div class="mock-row"><span>Taladro percutor</span><div class="mock-qty"><span>-</span>1<span>+</span></div></div>
+        <div class="mock-row"><span>Set de llaves</span><div class="mock-qty"><span>-</span>2<span>+</span></div></div>
+        <div class="mock-row"><span>Cinta métrica</span><div class="mock-qty"><span>-</span>1<span>+</span></div></div>
+        <div class="mock-total"><span>Total</span><span>$93.400</span></div>
+      </div>
+      <div>
+        <h4>Carrito y pedido con un toque</h4>
+        <p>El cliente suma y resta cantidades, ve el total actualizado, completa sus datos y el pedido le llega listo a tu WhatsApp — sin que tengas que anotarlo vos.</p>
+      </div>
+    </div>
+
+    <div class="mpane" data-pane="admin">
+      <div class="mock mock-admin">
+        <div class="mock-sidebar">
+          <div class="mock-side-item active">📊 Tablero</div>
+          <div class="mock-side-item">Productos</div>
+          <div class="mock-side-item">Categorías</div>
+          <div class="mock-side-item">Pedidos</div>
+        </div>
+        <div style="flex:1;">
+          <div class="mock-field">Nombre del producto</div>
+          <div class="mock-input">Set de destornilladores</div>
+          <div class="mock-field">Precio</div>
+          <div class="mock-input">$12.500</div>
+          <div class="mock-btn">Guardar cambios</div>
+        </div>
+      </div>
+      <div>
+        <h4>Panel de administración propio</h4>
+        <p>Con tu usuario y contraseña cargás productos, fotos, categorías y precios desde el celular, cuando quieras, sin depender de nadie más.</p>
+      </div>
+    </div>
+
+    <div class="mpane" data-pane="cobros">
+      <div class="mock-receipt">
+        <div class="mock-r-head"><div class="logo-dot"></div><b>Ferretería Sur</b></div>
+        <div class="mock-r-row"><span>Taladro percutor</span><span>$45.000</span></div>
+        <div class="mock-r-row"><span>Set de llaves</span><span>$22.000</span></div>
+        <div class="mock-r-row"><span>Cinta métrica</span><span>$4.200</span></div>
+        <div class="mock-r-row" style="border:none;font-weight:700;"><span>Total</span><span>$71.200</span></div>
+        <div class="mock-stamp">SEÑADO</div>
+      </div>
+      <div>
+        <h4>Cobros, señas y presupuestos en PDF</h4>
+        <p>Registrás cada pago y la app calcula sola cuánto te falta cobrar. Para presupuestos, generás un PDF prolijo con tu logo para mandar por WhatsApp.</p>
+      </div>
+    </div>
+
+    <div class="mpane" data-pane="tablero">
+      <div class="mock">
+        <div class="mock-stats">
+          <div class="mock-stat" style="background:linear-gradient(135deg,#FF5A36,#E14523);">$186.400<span>Ventas del mes</span></div>
+          <div class="mock-stat" style="background:linear-gradient(135deg,#1F6F6B,#154D4A);">$140.000<span>Cobrado</span></div>
+        </div>
+        <div style="margin-top:14px;">
+          <div class="mock-bar-row"><div class="mock-bar-label"><span>Taladro percutor</span><span>18</span></div><div class="mock-bar-track"><div class="mock-bar-fill" style="width:90%;"></div></div></div>
+          <div class="mock-bar-row"><div class="mock-bar-label"><span>Set de llaves</span><span>11</span></div><div class="mock-bar-track"><div class="mock-bar-fill" style="width:55%;"></div></div></div>
+        </div>
+      </div>
+      <div>
+        <h4>Tablero del mes</h4>
+        <p>Ventas confirmadas, cuánto cobraste, cuánto te deben y qué productos conviene ofrecer más — de un vistazo, sin hacer cuentas a mano.</p>
+      </div>
+    </div>
+
+    <div class="mpane" data-pane="notis">
+      <div>
+        <div class="mock-noti"><span class="bell">🔔</span><div><b>Nuevo pedido</b><p>Juan P. — $71.200</p></div></div>
+        <div class="mock-share">🔗 dulce-benjamin.vercel.app/?producto=8</div>
+      </div>
+      <div>
+        <h4>Notificaciones y compartir</h4>
+        <p>Te enterás al toque cuando entra un pedido nuevo. Y cualquier producto se puede compartir por link directo, para mandarlo a quien quieras.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function abrirModalHerr(){ document.getElementById('modalHerr').classList.remove('hidden'); }
+  function cerrarModalHerr(){ document.getElementById('modalHerr').classList.add('hidden'); }
+  document.querySelectorAll('.mtab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.mpane').forEach(p=>p.classList.toggle('show', p.dataset.pane===tab));
+    });
+  });
+</script>
+
+<script>
+  // reveal on scroll
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+  },{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click',()=>{
+      item.classList.toggle('open');
+    });
+  });
+
+  // Hero phone: cycles through business skins
+  const skins = [
+    {brand:'Ferretería Sur', tag:'CATÁLOGO · PEDIDOS · ADMIN', color:'#2E6F6E',
+     cats:['Todos','Herramientas','Tornillería'],
+     items:[['Taladro','$45.000'],['Pintura 4L','$18.500'],['Set llaves','$22.000'],['Cinta métrica','$4.200']]},
+    {brand:'Kiosco 24hs', tag:'CATÁLOGO · PEDIDOS · ADMIN', color:'#B85F15',
+     cats:['Todos','Bebidas','Snacks'],
+     items:[['Gaseosa 1.5L','$1.800'],['Alfajor','$900'],['Cerveza lata','$1.400'],['Papas fritas','$2.100']]},
+    {brand:'Look & Style', tag:'CATÁLOGO · PEDIDOS · ADMIN', color:'#8E2F5F',
+     cats:['Todos','Remeras','Pantalones'],
+     items:[['Remera oversize','$14.500'],['Jean recto','$32.000'],['Buzo canguro','$26.000'],['Campera','$48.000']]},
+    {brand:'Dulce Benjamín', tag:'CATÁLOGO · PEDIDOS · ADMIN', color:'#A82339',
+     cats:['Todos','Chocolates','Combos'],
+     items:[['Cajita 3D','$1.500'],['Candy bar mini','$8.000'],['Combo choco','$2.200'],['Combo XL','$15.000']]},
+  ];
+  let skinIdx = 0;
+  function pintar(skin){
+    document.getElementById('phoneHead').style.background = skin.color;
+    document.getElementById('phoneBrand').textContent = skin.brand;
+    document.getElementById('phoneTag').textContent = skin.tag;
+    document.getElementById('pillA').textContent = skin.cats[0];
+    document.getElementById('pillB').textContent = skin.cats[1];
+    document.getElementById('pillC').textContent = skin.cats[2];
+    skin.items.forEach((it,i)=>{
+      document.getElementById('nm'+(i+1)).textContent = it[0];
+      document.getElementById('pr'+(i+1)).textContent = it[1];
+      document.getElementById('ph'+(i+1)).style.background = skin.color+'33';
+    });
+  }
+  pintar(skins[0]);
+  setInterval(()=>{
+    skinIdx = (skinIdx+1) % skins.length;
+    pintar(skins[skinIdx]);
+  }, 2600);
+</script>
+</body>
+</html>
