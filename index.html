@@ -13,43 +13,19 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-  :root{
-    /* Paleta modernizada */
+    :root{
+    /* Paleta adaptada al nuevo logo */
     --paper: #FAFAFA;
     --linen: #F3F4F6;
-    --ink: #111827;
-    --ink-soft: #4B5563;
-    --coral: #FF5A36;
+    --ink: #1A2639; /* Azul marino oscuro inspirado en los trazos del logo */
+    --ink-soft: #475569;
+    --coral: #FF5A36; /* El coral exacto del punto del logo */
     --coral-dark: #E14523;
-    --teal: #0D9488;
+    --teal: #0D9488; /* Mantenemos el teal para contrastes secundarios */
     --mostaza: #F59E0B;
-    --line: rgba(17, 24, 39, 0.1);
+    --line: rgba(26, 38, 57, 0.1); /* Líneas sutiles basadas en el color ink */
   }
-  *{box-sizing:border-box;}
-  button{font:inherit;}
-  html{scroll-behavior:smooth;}
-  section[id]{scroll-margin-top:84px;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.display{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    letter-spacing:-0.01em;
-    margin:0;
-  }
-  .mono{
-    font-family:'JetBrains Mono',monospace;
-    letter-spacing:0.02em;
-  }
-  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
-  a{color:inherit;}
-  img,svg{display:block;}
+
 
   /* ---------- ANIMACIONES ---------- */
   @keyframes float {
@@ -67,11 +43,23 @@
     transition: all 0.3s ease;
   }
   .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
-  .logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;}
-  .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--coral);}
-  .nav-links{display:flex;gap:28px;font-size:0.92rem;color:var(--ink-soft); font-weight: 500;}
-  .nav-links a{text-decoration:none;transition:color .2s;}
-  .nav-links a:hover{color:var(--coral);}
+    .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .logo:hover {
+    transform: scale(1.02);
+  }
+  .logo img {
+    height: 56px; /* Altura ideal para la barra de navegación */
+    width: auto;
+    object-fit: contain;
+    /* Si guardás la imagen en formato circular, esto asegura que se vea bien */
+    border-radius: 50%; 
+  }
+  
   
   /* Botones mejorados */
   .btn{
@@ -354,7 +342,10 @@
 
 <header class="site">
   <div class="wrap nav">
-    <div class="logo"><span class="dot"></span> Vidriera Digital</div>
+    <a href="/" class="logo">
+  <img src="tu-logo-vidriera.png" alt="Tu vidriera digital">
+    </a>
+    
     <nav class="nav-links">
       <a href="#herramientas">Herramientas</a>
       <a href="#rubros">Para tu rubro</a>
