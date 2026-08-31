@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contanos sobre tu negocio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #15181F;
+    --paper: #F6F2EA;
+    --card: #FFFFFF;
+    --coral: #FF5A36;
+    --coral-dark: #DB4522;
+    --teal: #0F5E56;
+    --line: rgba(21,24,31,0.12);
+    --muted: rgba(21,24,31,0.58);
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+
+  .wrap{
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 22px 80px;
+  }
+
+  header{
+    margin-bottom: 36px;
+  }
+
+  header .kicker{
+    font-size: 14px;
+    color: var(--teal);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(30px, 7vw, 42px);
+    line-height: 1.08;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+
+  header p{
+    color: var(--muted);
+    font-size: 15.5px;
+    max-width: 46ch;
+    margin: 0;
+  }
+
+  form{
+    background: var(--card);
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    padding: 28px 22px;
+    box-shadow: 0 24px 48px -32px rgba(21,24,31,0.25);
+  }
+
+  .field{
+    margin-bottom: 26px;
+  }
+  .field:last-of-type{ margin-bottom: 0; }
+
+  label.q{
+    display:block;
+    font-weight: 600;
+    font-size: 15.5px;
+    margin-bottom: 6px;
+  }
+
+  .hint{
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+
+  input[type="text"], input[type="email"], textarea{
+    width: 100%;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: #FCFBF8;
+    transition: border-color .15s ease;
+  }
+  input:focus, textarea:focus{
+    outline: none;
+    border-color: var(--coral);
+  }
+
+  textarea{ resize: vertical; min-height: 90px; }
+
+  .options{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .opt{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 11px 13px;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .opt:has(input:checked){
+    border-color: var(--coral);
+    background: rgba(255,90,54,0.06);
+  }
+  .opt input{
+    margin-top: 2px;
+    accent-color: var(--coral);
+    flex-shrink: 0;
+  }
+  .opt span{ font-size: 14.5px; }
+
+  .other-input{
+    margin-top: 8px;
+    display: none;
+  }
+  .other-input.show{ display:block; }
+
+  .conditional{
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    display: none;
+  }
+  .conditional.show{ display:block; }
+
+  .required::after{
+    content: " *";
+    color: var(--coral);
+  }
+
+  button[type="submit"]{
+    width: 100%;
+    background: var(--coral);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background .15s ease;
+  }
+  button[type="submit"]:hover{ background: var(--coral-dark); }
+
+  .footnote{
+    text-align:center;
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+
+  .success{
+    display:none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .success.show{ display:block; }
+  form.hide{ display:none; }
+  .success h2{
+    font-family:'Fraunces', serif;
+    font-size: 24px;
+    margin: 0 0 10px;
+  }
+  .success p{
+    color: var(--muted);
+    font-size: 14.5px;
+    margin: 0 0 4px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Páginas web comerciales</div>
+    <h1>Contanos sobre tu negocio</h1>
+    <p>Completá estos datos y te preparamos una propuesta de página web a medida. Cuanto más nos cuentes, más precisa va a ser.</p>
+  </header>
+
+  <form id="contactForm">
+
+    <div class="field">
+      <label class="q required" for="empresa">Nombre de la empresa o comercio</label>
+      <input type="text" id="empresa" required>
+    </div>
+
+    <div class="field">
+      <label class="q required" for="rubro">Rubro</label>
+      <input type="text" id="rubro" placeholder="Ej: indumentaria, gastronomía, ferretería..." required>
+    </div>
+
+    <div class="field">
+      <label class="q required" for="contacto">Tu nombre y WhatsApp o email de contacto</label>
+      <input type="text" id="contacto" required>
+    </div>
+
+    <div class="field">
+      <label class="q required">Modalidad de trabajo</label>
+      <div class="options" data-group="modalidad">
+        <label class="opt"><input type="checkbox" name="modalidad" value="Local físico"><span>Venta con local físico</span></label>
+        <label class="opt"><input type="checkbox" name="modalidad" value="Solo online"><span>Venta solo online</span></label>
+        <label class="opt"><input type="checkbox" name="modalidad" value="Mixta"><span>Venta mixta (local + online)</span></label>
+        <label class="opt"><input type="checkbox" name="modalidad" value="WhatsApp/redes"><span>Solo por WhatsApp / redes</span></label>
+        <label class="opt"><input type="checkbox" name="modalidad" value="Servicios"><span>Prestación de servicios</span></label>
+        <label class="opt"><input type="checkbox" class="other-check" data-target="modalidad-other" name="modalidad" value="Otro"><span>Otro</span></label>
+      </div>
+      <input type="text" class="other-input" id="modalidad-other" placeholder="Contanos cuál">
+    </div>
+
+    <div class="field">
+      <label class="q required">Estilo que buscás para la página</label>
+      <div class="options" data-group="estilo">
+        <label class="opt"><input type="checkbox" name="estilo" value="Moderno / minimalista"><span>Moderno / minimalista</span></label>
+        <label class="opt"><input type="checkbox" name="estilo" value="Colorido / divertido"><span>Colorido / divertido</span></label>
+        <label class="opt"><input type="checkbox" name="estilo" value="Elegante / sobrio"><span>Elegante / sobrio</span></label>
+        <label class="opt"><input type="checkbox" name="estilo" value="Clásico / tradicional"><span>Clásico / tradicional</span></label>
+        <label class="opt"><input type="checkbox" name="estilo" value="Sin definir, quiero asesoramiento"><span>No tengo definido, quiero que me asesoren</span></label>
+        <label class="opt"><input type="checkbox" class="other-check" data-target="estilo-other" name="estilo" value="Otro"><span>Otro</span></label>
+      </div>
+      <input type="text" class="other-input" id="estilo-other" placeholder="Contanos cuál">
+    </div>
+
+    <div class="field">
+      <label class="q required">¿Ya tenés o tuviste una web propia?</label>
+      <div class="options" data-group="web-previa">
+        <label class="opt"><input type="radio" name="web-previa" value="Sí, tengo una activa" data-target="web-link"><span>Sí, tengo una activa</span></label>
+        <label class="opt"><input type="radio" name="web-previa" value="Tuve, ya no está activa" data-target="web-link"><span>Tuve, pero ya no está activa</span></label>
+        <label class="opt"><input type="radio" name="web-previa" value="No, nunca tuve"><span>No, nunca tuve</span></label>
+      </div>
+      <div class="conditional" id="web-link-wrap">
+        <label class="q" for="web-link">Dejanos el link si lo tenés</label>
+        <input type="text" id="web-link" placeholder="www.tunegocio.com">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="q required" for="negocio">Contanos un poco cómo es tu negocio</label>
+      <p class="hint">Qué vendés o qué servicio ofrecés, hace cuánto estás, quiénes son tus clientes, qué te gustaría que resuelva la página.</p>
+      <textarea id="negocio" required></textarea>
+    </div>
+
+    <div class="field">
+      <label class="q" for="extra">¿Algo más que quieras contarnos?</label>
+      <textarea id="extra"></textarea>
+    </div>
+
+    <button type="submit">Enviar consulta</button>
+    <p class="footnote">Se va a abrir tu app de email para confirmar el envío.</p>
+  </form>
+
+  <div class="success" id="successMsg">
+    <h2>¡Listo!</h2>
+    <p>Se abrió tu app de email con todos los datos cargados.</p>
+    <p>Solo tenés que confirmar el envío.</p>
+  </div>
+
+</div>
+
+<script>
+  const DEST_EMAIL = "matiasgarbarino19@gmail.com";
+
+  // toggle "otro" text inputs
+  document.querySelectorAll('.other-check').forEach(chk => {
+    chk.addEventListener('change', () => {
+      const target = document.getElementById(chk.dataset.target);
+      target.classList.toggle('show', chk.checked);
+      if(!chk.checked) target.value = '';
+    });
+  });
+
+  // toggle conditional web link field
+  document.querySelectorAll('input[name="web-previa"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const wrap = document.getElementById('web-link-wrap');
+      const shouldShow = !!document.querySelector('input[name="web-previa"]:checked')?.dataset.target;
+      wrap.classList.toggle('show', shouldShow);
+    });
+  });
+
+  function getChecked(name){
+    return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(i => i.value);
+  }
+
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const empresa = document.getElementById('empresa').value.trim();
+    const rubro = document.getElementById('rubro').value.trim();
+    const contacto = document.getElementById('contacto').value.trim();
+
+    let modalidad = getChecked('modalidad');
+    const modOtro = document.getElementById('modalidad-other').value.trim();
+    if(modOtro) modalidad = modalidad.map(m => m === 'Otro' ? `Otro: ${modOtro}` : m);
+
+    let estilo = getChecked('estilo');
+    const estOtro = document.getElementById('estilo-other').value.trim();
+    if(estOtro) estilo = estilo.map(m => m === 'Otro' ? `Otro: ${estOtro}` : m);
+
+    const webPrevia = document.querySelector('input[name="web-previa"]:checked')?.value || '(no respondido)';
+    const webLink = document.getElementById('web-link').value.trim();
+
+    const negocio = document.getElementById('negocio').value.trim();
+    const extra = document.getElementById('extra').value.trim();
+
+    if(!empresa || !rubro || !contacto || modalidad.length===0 || estilo.length===0 || !negocio){
+      alert('Por favor completá todos los campos obligatorios.');
+      return;
+    }
+
+    const subject = `Consulta web - ${empresa}`;
+    const bodyLines = [
+      `Empresa/comercio: ${empresa}`,
+      `Rubro: ${rubro}`,
+      `Contacto: ${contacto}`,
+      `Modalidad de trabajo: ${modalidad.join(', ')}`,
+      `Estilo buscado: ${estilo.join(', ')}`,
+      `¿Tuvo web propia?: ${webPrevia}${webLink ? ' — ' + webLink : ''}`,
+      ``,
+      `Cómo es su negocio:`,
+      negocio,
+    ];
+    if(extra){
+      bodyLines.push('', 'Algo más:', extra);
+    }
+
+    const body = bodyLines.join('\n');
+    const mailto = `mailto:${DEST_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
+
+    document.getElementById('contactForm').classList.add('hide');
+    document.getElementById('successMsg').classList.add('show');
+  });
+</script>
+
+</body>
+</html>
