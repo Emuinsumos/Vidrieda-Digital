@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waysty | Buenas Burgers Y Buenas Papas</title>
+<meta name="description" content="Waysty Fast Food · Buenas Burgers Y Buenas Papas. Mirá el menú y pedí online.">
+<meta property="og:title" content="Waysty">
+<meta property="og:description" content="Buenas Burgers Y Buenas Papas">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#B7241A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.85em' font-size='80'%3E🍟%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Nunito', 'sans-serif'],
+          heading: ['Anton', 'sans-serif'],
+        },
+        colors: {
+          cafe: {
+            50: '#FFF2EC',
+            100: '#F5DBD6',
+            200: '#E9B4AA',
+            300: '#D78375',
+            400: '#C64E39',
+            500: '#973726',
+            600: '#70271A',
+            700: '#8C1B12',
+            800: '#D9432B',
+            900: '#B7241A',
+          },
+          bronce: {
+            300: '#FFE9A6',
+            400: '#FFD400',
+            500: '#F2B600',
+            600: '#C98F00',
+          },
+          vino: {
+            500: '#FF8A5B',
+            600: '#F2600C',
+            700: '#C94A08',
+            800: '#8F3305',
+          },
+          celeste: {
+            400: '#5B7FA6',
+            500: '#2F5C8A',
+            600: '#1E3F63',
+          }
+        },
+        animation: {
+          'fade-in': 'fadeIn 0.4s ease forwards',
+          'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          'slide-down': 'slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'bounce-slight': 'bounceSlight 2s infinite',
+        },
+        keyframes: {
+          fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+          slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+          slideDown: { '0%': { opacity: '0', transform: 'translateY(-14px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+          bounceSlight: { '0%, 100%': { transform: 'translateY(-5%)' }, '50%': { transform: 'translateY(0)' } },
+        }
+      }
+    }
+  }
+</script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #FFF2EC;
+    color: #5C1D13;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, .font-heading { font-family: 'Fredoka', sans-serif; font-weight: 700; letter-spacing: 0; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #FFF2EC; }
+  ::-webkit-scrollbar-thumb { background: #D78375; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #973726; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .bg-papel {
+    background-color: #FFF2EC;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(255,212,0,0.10) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(183,36,26,0.07) 0px, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e9b4aa' fill-opacity='0.22' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+  }
+
+  .filete-borde {
+    border: 1px solid rgba(245, 219, 214, 0.7);
+    box-shadow: 0 10px 15px -3px rgba(183, 36, 26, 0.12), 0 4px 6px -2px rgba(183, 36, 26, 0.06);
+    transition: all 0.3s ease;
+  }
+  .filete-borde:hover {
+    border-color: #D78375;
+    box-shadow: 0 20px 25px -5px rgba(183, 36, 26, 0.18), 0 10px 10px -5px rgba(183, 36, 26, 0.06);
+  }
+  .text-brand-outline {
+    color: #FFD400;
+    text-shadow:
+      -2px -2px 0 #8C1B12, 2px -2px 0 #8C1B12, -2px 2px 0 #8C1B12, 2px 2px 0 #8C1B12,
+      -2px 0px 0 #8C1B12, 2px 0px 0 #8C1B12, 0px -2px 0 #8C1B12, 0px 2px 0 #8C1B12,
+      4px 4px 0 rgba(92, 29, 19, 0.35);
+  }
+
+  .btn-flotante {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-flotante:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 25px -5px rgba(0,0,0,0.3);
+  }
+
+  .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+
+  .btn-red {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 9999px;
+    color: #ffffff;
+    font-size: 20px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-red:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.4); }
+  .btn-whatsapp { background-color: #25D366; }
+  .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+</style>
+</head>
+<body class="bg-papel min-h-screen antialiased selection:bg-bronce-400 selection:text-cafe-900">
+
+<div id="root"></div>
+
+<script>
+  // Firebase compartido (mismo proyecto que otros locales) — este archivo es el local "Waysty"
+  const firebaseConfig = {
+    apiKey: "AIzaSyC4Cgxk2_PF5iDzvwQOh6AvAzvQBKjyiOU",
+    authDomain: "papasbrothers-78db8.firebaseapp.com",
+    databaseURL: "https://papasbrothers-78db8-default-rtdb.firebaseio.com", // ⚠️ VERIFICAR: ver instrucciones abajo
+    projectId: "papasbrothers-78db8",
+    storageBucket: "papasbrothers-78db8.firebasestorage.app",
+    messagingSenderId: "70075647680",
+    appId: "1:70075647680:web:3c9c23a830ffaa138fcf25"
+  };
+  firebase.initializeApp(firebaseConfig);
+  window.db = firebase.database();
+  // Cada local usa su propio nodo raíz dentro del mismo proyecto/base de datos.
+  // Este STORE_ID funciona como "clave" del local: es largo y aleatorio a propósito.
+  // Para el próximo local, copiá este archivo y cambiá SOLO este STORE_ID por uno nuevo
+  // (y agregalo a las reglas de Firebase, ver instrucciones que te pasó Matias/el desarrollador).
+  window.STORE_ID = "waysty-fe9onp6bpy";
+  window.ref = function (path) {
+    return window.db.ref('locales/' + window.STORE_ID + (path ? ('/' + path) : ''));
+  };
+</script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const NOMBRE_NEGOCIO = "Waysty";
+const TAGLINE = "Buenas Burgers Y Buenas Papas";
+
+// Credenciales de admin — cambiar acá cuando quieras
+const ADMIN_USUARIO = "WaystyAdmin";
+const ADMIN_CONTRASENA = "waysty2026";
+
+function resizeImagen(file, callback, maxSize = 900) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > height && width > maxSize) { height *= maxSize / width; width = maxSize; }
+      else if (height > maxSize) { width *= maxSize / height; height = maxSize; }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      callback(canvas.toDataURL('image/jpeg', 0.82));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function MensajeCocinaInput({ pedido, onGuardar }) {
+  const [texto, setTexto] = React.useState(pedido.mensaje || '');
+  return (
+    <div className="flex gap-1.5">
+      <input
+        value={texto}
+        onChange={e => setTexto(e.target.value)}
+        placeholder="Aviso para el cliente (opcional)"
+        className="flex-1 bg-cafe-900 border border-cafe-700 rounded-lg px-2.5 py-1.5 text-xs text-cafe-50 placeholder-cafe-500" />
+      <button onClick={() => onGuardar(pedido.id, texto)} className="bg-cafe-700 text-bronce-300 text-xs font-bold px-3 rounded-lg">
+        <i className="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  );
+}
+
+function App() {
+  const [productos, setProductos] = useState({});
+  const [categorias, setCategorias] = useState([]);
+  const LOGO_DEFAULT = 'data:image/jpeg;base64,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';
+  const [config, setConfig] = useState({ whatsapp: '', instagram: '', logo: LOGO_DEFAULT, direccion: '', alias: '' });
+
+  const [categoriaActiva, setCategoriaActiva] = useState('todas');
+  const [busqueda, setBusqueda] = useState('');
+
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [mostrarAdminModal, setMostrarAdminModal] = useState(false);
+  const [adminTab, setAdminTab] = useState('pedidos');
+  const [usuario, setUsuario] = useState('');
+  const [contrasena, setContrasena] = useState('');
+  const [errorLogin, setErrorLogin] = useState('');
+
+  const [form, setForm] = useState({ nombre: '', categoria: '', descripcion: '', precio: '', imagen: '', opciones: [], sabores: [], destacado: false });
+  const [editandoId, setEditandoId] = useState(null);
+  const [opcionProdNombre, setOpcionProdNombre] = useState('');
+  const [opcionProdPrecio, setOpcionProdPrecio] = useState('');
+  const [saborProdInput, setSaborProdInput] = useState('');
+
+  const [nuevaCategoria, setNuevaCategoria] = useState('');
+
+  const [whatsappInput, setWhatsappInput] = useState('');
+  const [instagramInput, setInstagramInput] = useState('');
+  const [direccionInput, setDireccionInput] = useState('');
+  const [aliasInput, setAliasInput] = useState('');
+  const [tiempoEstimadoInput, setTiempoEstimadoInput] = useState('');
+
+  const [carrito, setCarrito] = useState([]);
+  const [mostrarCarrito, setMostrarCarrito] = useState(false);
+  const [modoConsumo, setModoConsumo] = useState('takeaway');
+  const [pedidoForm, setPedidoForm] = useState({ nombre: '', telefono: '', direccion: '', aclaraciones: '' });
+  const [enviandoPedido, setEnviandoPedido] = useState(false);
+
+  const [numeroConsulta, setNumeroConsulta] = useState('');
+  const [pedidoConsultado, setPedidoConsultado] = useState(null);
+
+  const [pedidos, setPedidos] = useState({});
+  const [confirmacionPedido, setConfirmacionPedido] = useState(null);
+  const [mostrarConfirmarEnvio, setMostrarConfirmarEnvio] = useState(false);
+
+  const [chatbotConfig, setChatbotConfig] = useState({ saludo: '', preguntas: {} });
+  const [chatSaludoInput, setChatSaludoInput] = useState('');
+  const [mostrarChat, setMostrarChat] = useState(false);
+  const [preguntaActiva, setPreguntaActiva] = useState(null);
+  const [preguntaForm, setPreguntaForm] = useState({ pregunta: '', respuesta: '' });
+  const [editandoPreguntaId, setEditandoPreguntaId] = useState(null);
+
+  const [combos, setCombos] = useState({});
+  const [comboForm, setComboForm] = useState({ nombre: '', descripcion: '', precio: '', imagen: '' });
+  const [editandoComboId, setEditandoComboId] = useState(null);
+
+  const [modoVistaCocina, setModoVistaCocina] = useState(false);
+
+  const [productoDetalle, setProductoDetalle] = useState(null);
+  const [opcionesSel, setOpcionesSel] = useState([]);
+  const [saborSel, setSaborSel] = useState('');
+  const [cantidadDetalle, setCantidadDetalle] = useState(1);
+  const [editandoCartId, setEditandoCartId] = useState(null);
+
+  const [adminAuth, setAdminAuth] = useState({ usuario: ADMIN_USUARIO, contrasena: ADMIN_CONTRASENA });
+  const [nuevoUsuarioAdmin, setNuevoUsuarioAdmin] = useState('');
+  const [nuevaContrasenaAdmin, setNuevaContrasenaAdmin] = useState('');
+  const [confirmarContrasenaAdmin, setConfirmarContrasenaAdmin] = useState('');
+  const [avisoCredencialesAdmin, setAvisoCredencialesAdmin] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('cocina')) setModoVistaCocina(true);
+  }, []);
+
+  useEffect(() => {
+    try {
+      const guardado = JSON.parse(localStorage.getItem('waystyCliente') || 'null');
+      if (guardado) setPedidoForm(f => ({ ...f, ...guardado, aclaraciones: '' }));
+    } catch (e) {}
+  }, []);
+
+  useEffect(() => {
+    ref('productos').on('value', s => setProductos(s.val() || {}));
+    ref('categorias').on('value', s => setCategorias(s.val() || []));
+    ref('config').on('value', s => {
+      const c = s.val() || {};
+      setConfig({ ...c, logo: c.logo || LOGO_DEFAULT, abierto: c.abierto !== false });
+      setWhatsappInput(c.whatsapp || '');
+      setInstagramInput(c.instagram || '');
+      setDireccionInput(c.direccion || '');
+      setAliasInput(c.alias || '');
+      setTiempoEstimadoInput(c.tiempoEstimado || '');
+    });
+    ref('pedidos').on('value', s => setPedidos(s.val() || {}));
+    ref('adminAuth').on('value', s => {
+      const a = s.val();
+      if (a && a.usuario && a.contrasena) setAdminAuth(a);
+    });
+    ref('chatbot').on('value', s => {
+      const c = s.val() || { saludo: '', preguntas: {} };
+      setChatbotConfig(c);
+      setChatSaludoInput(c.saludo || '');
+    });
+    ref('combos').on('value', s => setCombos(s.val() || {}));
+  }, []);
+
+  const listaProductos = Object.entries(productos).map(([id, p]) => ({ id, ...p }));
+  const productosDestacados = listaProductos.filter(p => p.destacado);
+  const [sliderIndex, setSliderIndex] = useState(0);
+  useEffect(() => {
+    if (productosDestacados.length < 2) return;
+    const t = setInterval(() => setSliderIndex(i => (i + 1) % productosDestacados.length), 4000);
+    return () => clearInterval(t);
+  }, [productosDestacados.length]);
+
+  const productosFiltrados = listaProductos.filter(p => {
+    const pasaCategoria = categoriaActiva === 'todas' || p.categoria === categoriaActiva;
+    const pasaBusqueda = !busqueda || p.nombre.toLowerCase().includes(busqueda.toLowerCase());
+    return pasaCategoria && pasaBusqueda;
+  });
+
+  const categoriasConProductos = categorias.filter(c => listaProductos.some(p => p.categoria === c));
+
+  function intentarLogin() {
+    if (usuario === adminAuth.usuario && contrasena === adminAuth.contrasena) {
+      setIsAdmin(true);
+      setErrorLogin('');
+      setUsuario(''); setContrasena('');
+    } else {
+      setErrorLogin('Usuario o contraseña incorrectos');
+    }
+  }
+  function guardarCredencialesAdmin() {
+    setAvisoCredencialesAdmin('');
+    const nuevoUsuario = nuevoUsuarioAdmin.trim() || adminAuth.usuario;
+    if (nuevaContrasenaAdmin || confirmarContrasenaAdmin) {
+      if (nuevaContrasenaAdmin.length < 4) { setAvisoCredencialesAdmin('La contraseña debe tener al menos 4 caracteres.'); return; }
+      if (nuevaContrasenaAdmin !== confirmarContrasenaAdmin) { setAvisoCredencialesAdmin('Las contraseñas no coinciden.'); return; }
+    }
+    const nuevaContrasena = nuevaContrasenaAdmin || adminAuth.contrasena;
+    ref('adminAuth').set({ usuario: nuevoUsuario, contrasena: nuevaContrasena }).then(() => {
+      setNuevoUsuarioAdmin(''); setNuevaContrasenaAdmin(''); setConfirmarContrasenaAdmin('');
+      setAvisoCredencialesAdmin('¡Listo! Usuario y contraseña actualizados.');
+    });
+  }
+  function cerrarSesion() {
+    setIsAdmin(false);
+    setMostrarAdminModal(false);
+  }
+
+  function resetForm() {
+    setForm({ nombre: '', categoria: categorias[0] || '', descripcion: '', precio: '', imagen: '', opciones: [], sabores: [], destacado: false });
+    setEditandoId(null);
+    setOpcionProdNombre(''); setOpcionProdPrecio(''); setSaborProdInput('');
+  }
+  function editarProducto(p) {
+    setForm({ nombre: p.nombre, categoria: p.categoria, descripcion: p.descripcion || '', precio: String(p.precio), imagen: p.imagen || '', opciones: p.opciones || [], sabores: p.sabores || [], destacado: !!p.destacado });
+    setEditandoId(p.id);
+    setAdminTab('productos');
+  }
+  function guardarProducto() {
+    if (!form.nombre || !form.categoria || !form.precio) return;
+    const id = editandoId || ref('productos').push().key;
+    ref('productos/' + id).set({
+      nombre: form.nombre,
+      categoria: form.categoria,
+      descripcion: form.descripcion || '',
+      precio: Number(form.precio),
+      imagen: form.imagen || '',
+      opciones: form.opciones || [],
+      sabores: form.sabores || [],
+      destacado: !!form.destacado
+    });
+    resetForm();
+  }
+  function eliminarProducto(id) {
+    if (confirm('¿Eliminar este ítem del menú?')) ref('productos/' + id).remove();
+  }
+  // Carga inicial con las hamburguesas del menú (se ejecuta una sola vez, a mano, desde el panel)
+  function cargarMenuInicial() {
+    if (!confirm('Esto va a crear las categorías Hamburguesas, Papas Fritas, Nuggets y Bebidas, cargar todo el menú de Waysty con sus precios, y agregar los combos Eddie y Deli. ¿Continuar?')) return;
+    const CATEGORIAS_NUEVAS = ['Hamburguesas', 'Papas Fritas', 'Nuggets', 'Bebidas'].filter(c => !categorias.includes(c));
+    if (CATEGORIAS_NUEVAS.length) ref('categorias').set([...categorias, ...CATEGORIAS_NUEVAS]);
+
+    const items = [
+      // Hamburguesas
+      ['Cheese Burger Simple', 'Doble cheddar, carne', 'Hamburguesas', 13500],
+      ['Cheese Burger Doble', 'Doble cheddar, carne', 'Hamburguesas', 17800],
+      ['Cheese Burger Triple', 'Doble cheddar, carne', 'Hamburguesas', 18800],
+      ['Extra Cuarto Simple', 'Doble cheddar, carne, ketchup, mostaza, cebolla', 'Hamburguesas', 13600],
+      ['Extra Cuarto Doble', 'Doble cheddar, carne, ketchup, mostaza, cebolla', 'Hamburguesas', 17900],
+      ['Extra Cuarto Triple', 'Doble cheddar, carne, ketchup, mostaza, cebolla', 'Hamburguesas', 18900],
+      ['King Simple', 'Doble cheddar, carne, bacon, cebolla crispy, salsa eddi', 'Hamburguesas', 16300],
+      ['King Doble', 'Doble cheddar, carne, bacon, cebolla crispy, salsa eddi', 'Hamburguesas', 18800],
+      ['King Triple', 'Doble cheddar, carne, bacon, cebolla crispy, salsa eddi', 'Hamburguesas', 21000],
+      ['Max Bacon Triple', 'Doble cheddar, carne, bacon x2', 'Hamburguesas', 21900],
+      ['Max Bacon Cuádruple', 'Doble cheddar, carne, bacon x2', 'Hamburguesas', 22900],
+      ['Deli Simple', 'Doble cheddar, carne, bacon, cebolla caramelizada', 'Hamburguesas', 16300],
+      ['Deli Doble', 'Doble cheddar, carne, bacon, cebolla caramelizada', 'Hamburguesas', 18800],
+      ['Deli Triple', 'Doble cheddar, carne, bacon, cebolla caramelizada', 'Hamburguesas', 20500],
+      ['Big Queen Simple', 'Doble cheddar, carne, lechuga, tomate, bacon, cebolla, salsa eddi', 'Hamburguesas', 16100],
+      ['Big Queen Doble', 'Doble cheddar, carne, lechuga, tomate, bacon, cebolla, salsa eddi', 'Hamburguesas', 19400],
+      ['Big Queen Triple', 'Doble cheddar, carne, lechuga, tomate, bacon, cebolla, salsa eddi', 'Hamburguesas', 21000],
+      ['Clasic Simple', 'Doble cheddar, carne, lechuga, tomate, huevo, salsa clasic', 'Hamburguesas', 16000],
+      ['Clasic Doble', 'Doble cheddar, carne, lechuga, tomate, huevo, salsa clasic', 'Hamburguesas', 19300],
+      // Papas Fritas (todas las hamburguesas ya vienen con papas)
+      ['Papas Extras', 'Porción adicional de papas fritas', 'Papas Fritas', 3500],
+      ['Papas con Sazonado Pep', 'Agregado de sazonado Pep a tus papas', 'Papas Fritas', 1200],
+      ['Papas Cheddar y Bacon', 'Agregado de cheddar y bacon a tus papas', 'Papas Fritas', 5000],
+      ['Papas Cheddar y Bacon XL', 'Porción XL de papas con cheddar y bacon (vienen aparte)', 'Papas Fritas', 15000],
+      // Nuggets
+      ['Nuggets con Salsa Eddie', 'Nuggets solos con dip de salsa Eddie', 'Nuggets', 11200],
+      ['Nuggets con Papas y Salsa Eddie', 'Nuggets con papas y dip de salsa Eddie', 'Nuggets', 13500],
+      // Bebidas
+      ['Coca Cola', 'Lata / botella', 'Bebidas', 2500],
+      ['Coca Cola Zero', 'Lata / botella', 'Bebidas', 2500],
+      ['Sprite', 'Lata / botella', 'Bebidas', 2500],
+      ['Fanta', 'Lata / botella', 'Bebidas', 2000],
+    ];
+    const updates = {};
+    items.forEach(([nombre, descripcion, categoria, precio]) => {
+      const id = ref('productos').push().key;
+      updates['productos/' + id] = { nombre, categoria, descripcion, precio, imagen: '', opciones: [], sabores: [] };
+    });
+    ref().update(updates);
+
+    const combosIniciales = [
+      { nombre: 'Combo Eddie', descripcion: 'Doble Cheese + Max Bacon Triple, con papas y 2 bebidas a elección', precio: 41500 },
+      { nombre: 'Combo Deli', descripcion: 'Deli Simple con papas y gaseosa a elección', precio: 17800 },
+    ];
+    const comboUpdates = {};
+    combosIniciales.forEach(c => {
+      const id = ref('combos').push().key;
+      comboUpdates['combos/' + id] = { ...c, imagen: '' };
+    });
+    ref().update(comboUpdates);
+  }
+  function handleImagenProducto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    resizeImagen(file, dataUrl => setForm(f => ({ ...f, imagen: dataUrl })));
+    e.target.value = '';
+  }
+  function agregarOpcionProducto() {
+    if (!opcionProdNombre) return;
+    setForm(f => ({ ...f, opciones: [...(f.opciones || []), { nombre: opcionProdNombre, precioExtra: Number(opcionProdPrecio) || 0 }] }));
+    setOpcionProdNombre(''); setOpcionProdPrecio('');
+  }
+  function quitarOpcionProducto(idx) {
+    setForm(f => ({ ...f, opciones: f.opciones.filter((_, i) => i !== idx) }));
+  }
+  function agregarSaborProducto() {
+    if (!saborProdInput) return;
+    setForm(f => ({ ...f, sabores: [...(f.sabores || []), saborProdInput] }));
+    setSaborProdInput('');
+  }
+  function quitarSaborProducto(idx) {
+    setForm(f => ({ ...f, sabores: f.sabores.filter((_, i) => i !== idx) }));
+  }
+
+  function agregarCategoria() {
+    if (!nuevaCategoria || categorias.includes(nuevaCategoria)) return;
+    ref('categorias').set([...categorias, nuevaCategoria]).then(() => setNuevaCategoria(''));
+  }
+  function eliminarCategoria(cat) {
+    if (listaProductos.some(p => p.categoria === cat)) {
+      alert('Esta categoría tiene ítems del menú cargados. Cambiá o eliminá esos ítems antes de borrarla.');
+      return;
+    }
+    ref('categorias').set(categorias.filter(c => c !== cat));
+  }
+
+  function abrirDetalle(p) {
+    setProductoDetalle(p);
+    setOpcionesSel([]);
+    setSaborSel((p.sabores && p.sabores[0]) || '');
+    setCantidadDetalle(1);
+    setEditandoCartId(null);
+  }
+  function cerrarDetalle() {
+    setProductoDetalle(null);
+    setEditandoCartId(null);
+  }
+  function editarItemCarrito(item) {
+    const producto = productos[item.productoId];
+    if (!producto) return;
+    setProductoDetalle({ ...producto, id: item.productoId });
+    setOpcionesSel(item.opciones || []);
+    setSaborSel(item.sabor || '');
+    setCantidadDetalle(item.cantidad || 1);
+    setEditandoCartId(item.id);
+  }
+  function toggleOpcionDetalle(nombre) {
+    setOpcionesSel(prev => prev.includes(nombre) ? prev.filter(o => o !== nombre) : [...prev, nombre]);
+  }
+  function agregarDetalleAlCarrito() {
+    const p = productoDetalle;
+    if (!p || config.abierto === false) return;
+    const extras = (p.opciones || []).filter(o => opcionesSel.includes(o.nombre));
+    const extraTotal = extras.reduce((a, o) => a + (Number(o.precioExtra) || 0), 0);
+    const precioFinal = p.precio + extraTotal;
+    const partes = [];
+    if (saborSel) partes.push(saborSel);
+    partes.push(...extras.map(o => o.nombre));
+    const nombreFinal = partes.length ? `${p.nombre} (${partes.join(', ')})` : p.nombre;
+    const cartId = p.id + (partes.length ? '__' + partes.join('|') : '');
+    const cant = cantidadDetalle;
+    const idAEditar = editandoCartId;
+    setCarrito(prev => {
+      const base = idAEditar ? prev.filter(it => it.id !== idAEditar) : prev;
+      const existe = base.find(it => it.id === cartId);
+      if (existe) return base.map(it => it.id === cartId ? { ...it, cantidad: it.cantidad + cant } : it);
+      return [...base, { id: cartId, nombre: nombreFinal, precio: precioFinal, cantidad: cant, imagen: p.imagen || '', productoId: p.id, opciones: opcionesSel, sabor: saborSel }];
+    });
+    cerrarDetalle();
+  }
+  function agregarComboAlCarrito(c) {
+    if (config.abierto === false) return;
+    const cartId = 'combo-' + c.id;
+    setCarrito(prev => {
+      const existe = prev.find(it => it.id === cartId);
+      if (existe) return prev.map(it => it.id === cartId ? { ...it, cantidad: it.cantidad + 1 } : it);
+      return [...prev, { id: cartId, nombre: c.nombre, precio: c.precio, cantidad: 1, imagen: c.imagen || '' }];
+    });
+  }
+  function cambiarCantidadCarrito(id, delta) {
+    setCarrito(prev => prev
+      .map(it => it.id === id ? { ...it, cantidad: it.cantidad + delta } : it)
+      .filter(it => it.cantidad > 0));
+  }
+  const totalCarrito = carrito.reduce((a, it) => a + it.cantidad * it.precio, 0);
+  const cantidadCarrito = carrito.reduce((a, it) => a + it.cantidad, 0);
+
+  function puedeEnviarPedido() {
+    if (config.abierto === false) return false;
+    if (carrito.length === 0) return false;
+    if (modoConsumo === 'delivery') return !!pedidoForm.nombre && !!pedidoForm.telefono && !!pedidoForm.direccion;
+    return !!pedidoForm.nombre; // take away
+  }
+
+  const [metodoPagoSel, setMetodoPagoSel] = useState(null); // null | 'efectivo' | 'transferencia'
+  const [montoEfectivo, setMontoEfectivo] = useState('');
+
+  function confirmarMetodoPago(metodo) {
+    if (!puedeEnviarPedido() || !config.whatsapp) return;
+    if (metodo === 'transferencia' && !config.alias) return;
+    setMetodoPagoSel(metodo);
+  }
+
+  const [errorEnvioPedido, setErrorEnvioPedido] = useState('');
+  const [ultimoLinkWsp, setUltimoLinkWsp] = useState('');
+
+  function enviarPedido(ventanaWsp) {
+    const metodo = metodoPagoSel;
+    if (!puedeEnviarPedido() || !metodo || !config.whatsapp) { if (ventanaWsp) ventanaWsp.close(); return; }
+    setEnviandoPedido(true);
+    setErrorEnvioPedido('');
+
+    const avisoTimeout = setTimeout(() => {
+      setEnviandoPedido(false);
+      setErrorEnvioPedido('Se está demorando más de lo normal. Revisá tu conexión a internet y volvé a intentar.');
+    }, 15000);
+
+    function manejarError() {
+      clearTimeout(avisoTimeout);
+      setEnviandoPedido(false);
+      setErrorEnvioPedido('No se pudo enviar el pedido. Revisá tu conexión y tocá "Enviar Pedido" de nuevo.');
+      if (ventanaWsp && !ventanaWsp.closed) ventanaWsp.close();
+    }
+
+    ref('contadorPedidos').transaction(actual => (actual || 0) + 1).then(res => {
+      const numero = res.snapshot.val();
+      const pedidoData = {
+        numero,
+        modo: modoConsumo,
+        nombre: pedidoForm.nombre || null,
+        telefono: pedidoForm.telefono || null,
+        direccion: pedidoForm.direccion || null,
+        aclaraciones: pedidoForm.aclaraciones || null,
+        items: carrito,
+        total: totalCarrito,
+        pago: { metodo, monto: metodo === 'efectivo' ? (montoEfectivo || null) : null },
+        estado: 'recibido',
+        mensaje: '',
+        creado: Date.now()
+      };
+
+      ref('pedidos').push().set(pedidoData).then(() => {
+        clearTimeout(avisoTimeout);
+        try {
+          localStorage.setItem('waystyCliente', JSON.stringify({ nombre: pedidoForm.nombre, telefono: pedidoForm.telefono, direccion: pedidoForm.direccion }));
+        } catch (e) {}
+        const lineas = [];
+        lineas.push(`Pedido #${numero} - ${NOMBRE_NEGOCIO}`);
+        if (modoConsumo === 'takeaway') lineas.push(`Modo: Take away - ${pedidoForm.nombre}`);
+        if (modoConsumo === 'delivery') {
+          lineas.push(`Modo: Delivery`);
+          lineas.push(`Cliente: ${pedidoForm.nombre}`);
+          lineas.push(`Teléfono: ${pedidoForm.telefono}`);
+          lineas.push(`Dirección: ${pedidoForm.direccion}`);
+        }
+        lineas.push('-------------------------');
+        carrito.forEach(it => lineas.push(`${it.cantidad}x ${it.nombre} - $${it.cantidad * it.precio}`));
+        lineas.push('-------------------------');
+        lineas.push(`Total: $${totalCarrito}`);
+        if (metodo === 'efectivo') lineas.push(`Pago: Efectivo - abona con $${montoEfectivo || totalCarrito}`);
+        if (metodo === 'transferencia') lineas.push(`Pago: Transferencia - envío el comprobante`);
+        if (pedidoForm.aclaraciones) lineas.push(`Aclaraciones: ${pedidoForm.aclaraciones}`);
+        const mensajeWsp = encodeURIComponent(lineas.join('\n'));
+        const linkWsp = `https://wa.me/${config.whatsapp}?text=${mensajeWsp}`;
+        setUltimoLinkWsp(linkWsp);
+        if (ventanaWsp && !ventanaWsp.closed) {
+          ventanaWsp.location.href = linkWsp;
+        } else {
+          window.open(linkWsp, '_blank');
+        }
+        setConfirmacionPedido(`¡Pedido #${numero} enviado! Guardá este número para seguir el estado en "Seguí tu pedido".${config.tiempoEstimado ? ` Tiempo estimado: ${config.tiempoEstimado}.` : ''}`);
+        setCarrito([]);
+        setPedidoForm(f => ({ ...f, aclaraciones: '' }));
+        setMetodoPagoSel(null);
+        setMontoEfectivo('');
+        setMostrarCarrito(false);
+        setEnviandoPedido(false);
+      }).catch(manejarError);
+    }).catch(manejarError);
+  }
+  function cerrarConfirmacionPedido() {
+    setConfirmacionPedido(null);
+    setUltimoLinkWsp('');
+    setMostrarCarrito(false);
+  }
+  function abrirCarrito() {
+    setConfirmacionPedido(null);
+    setUltimoLinkWsp('');
+    setMostrarCarrito(true);
+  }
+
+  const ESTADOS_PEDIDO = ['recibido', 'en_preparacion', 'en_camino', 'entregado', 'cobrado'];
+  const ESTADO_LABEL = { recibido: 'Recibido', en_preparacion: 'En preparación', en_camino: 'En camino / listo', entregado: 'Entregado', cobrado: 'Cobrado', cancelado: 'Cancelado' };
+  const ESTADO_ESTILO = {
+    recibido: 'bg-sky-100 text-sky-700',
+    en_preparacion: 'bg-bronce-200 text-cafe-800',
+    en_camino: 'bg-orange-100 text-orange-700',
+    entregado: 'bg-purple-100 text-purple-700',
+    cobrado: 'bg-green-100 text-green-700',
+    cancelado: 'bg-red-100 text-red-700'
+  };
+  const listaPedidos = Object.entries(pedidos).map(([id, p]) => ({ id, ...p })).sort((a,b) => (b.creado||0) - (a.creado||0));
+
+  function linkCocina() {
+    return `${window.location.origin}${window.location.pathname}?cocina=1`;
+  }
+
+  function avanzarEstadoPedido(id, estadoActual) {
+    const idx = ESTADOS_PEDIDO.indexOf(estadoActual);
+    if (idx === -1 || idx === ESTADOS_PEDIDO.length - 1) return;
+    ref('pedidos/' + id + '/estado').set(ESTADOS_PEDIDO[idx + 1]);
+  }
+  function cancelarPedido(id) {
+    if (confirm('¿Cancelar este pedido? El cliente va a ver que fue cancelado en "Seguí tu pedido".')) {
+      ref('pedidos/' + id + '/estado').set('cancelado');
+    }
+  }
+  function horaCorta(ts) {
+    if (!ts) return '';
+    return new Date(ts).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+  }
+  function etiquetaOrigenPedido(p) {
+    if (p.modo === 'takeaway') return `Take away - ${p.nombre}`;
+    return `Delivery - ${p.nombre}`;
+  }
+  function etiquetaEstadoPedido(estado, modo) {
+    if (estado === 'recibido') return 'Recibido';
+    if (estado === 'en_preparacion') return 'En preparación';
+    if (estado === 'en_camino') return modo === 'delivery' ? 'En camino' : 'Listo para retirar';
+    if (estado === 'entregado') return 'Entregado';
+    if (estado === 'cobrado') return 'Cobrado';
+    if (estado === 'cancelado') return 'Pedido cancelado';
+    return estado;
+  }
+  function buscarPedido() {
+    const encontrado = listaPedidos.find(p => String(p.numero) === String(numeroConsulta).trim());
+    setPedidoConsultado(encontrado || 'notfound');
+  }
+  function guardarMensajeCocina(id, texto) {
+    ref('pedidos/' + id + '/mensaje').set(texto || '');
+  }
+
+  const listaCombos = Object.entries(combos).map(([id, c]) => ({ id, ...c }));
+  function resetComboForm() {
+    setComboForm({ nombre: '', descripcion: '', precio: '', imagen: '' });
+    setEditandoComboId(null);
+  }
+  function editarCombo(c) {
+    setComboForm({ nombre: c.nombre, descripcion: c.descripcion || '', precio: String(c.precio), imagen: c.imagen || '' });
+    setEditandoComboId(c.id);
+  }
+  function guardarCombo() {
+    if (!comboForm.nombre || !comboForm.precio) return;
+    const id = editandoComboId || ref('combos').push().key;
+    ref('combos/' + id).set({
+      nombre: comboForm.nombre,
+      descripcion: comboForm.descripcion || '',
+      precio: Number(comboForm.precio),
+      imagen: comboForm.imagen || ''
+    });
+    resetComboForm();
+  }
+  function eliminarCombo(id) {
+    if (confirm('¿Eliminar este combo/promo?')) ref('combos/' + id).remove();
+  }
+  function handleImagenCombo(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    resizeImagen(file, dataUrl => setComboForm(f => ({ ...f, imagen: dataUrl })));
+    e.target.value = '';
+  }
+
+  const listaPreguntasBot = Object.entries(chatbotConfig.preguntas || {}).map(([id, p]) => ({ id, ...p }));
+  const SALUDO_BOT_DEFAULT = '¡Hola! 👋 Soy el asistente de Waysty. Elegí una pregunta:';
+
+  function guardarSaludoBot() {
+    ref('chatbot/saludo').set(chatSaludoInput);
+  }
+  function resetPreguntaBotForm() {
+    setPreguntaForm({ pregunta: '', respuesta: '' });
+    setEditandoPreguntaId(null);
+  }
+  function editarPreguntaBot(p) {
+    setPreguntaForm({ pregunta: p.pregunta, respuesta: p.respuesta });
+    setEditandoPreguntaId(p.id);
+  }
+  function guardarPreguntaBot() {
+    if (!preguntaForm.pregunta || !preguntaForm.respuesta) return;
+    const id = editandoPreguntaId || ref('chatbot/preguntas').push().key;
+    ref('chatbot/preguntas/' + id).set({ pregunta: preguntaForm.pregunta, respuesta: preguntaForm.respuesta });
+    resetPreguntaBotForm();
+  }
+  function eliminarPreguntaBot(id) {
+    if (confirm('¿Eliminar esta pregunta del chatbot?')) ref('chatbot/preguntas/' + id).remove();
+  }
+  function abrirChat() {
+    setPreguntaActiva(null);
+    setMostrarChat(true);
+  }
+
+  function guardarConfig() {
+    ref('config').set({ ...config, whatsapp: whatsappInput, instagram: instagramInput, direccion: direccionInput, alias: aliasInput, tiempoEstimado: tiempoEstimadoInput });
+  }
+  function toggleLocalAbierto() {
+    ref('config/abierto').set(!(config.abierto !== false));
+  }
+  function handleLogo(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    resizeImagen(file, dataUrl => {
+      ref('config').set({ ...config, whatsapp: whatsappInput, instagram: instagramInput, direccion: direccionInput, alias: aliasInput, tiempoEstimado: tiempoEstimadoInput, logo: dataUrl });
+    }, 300);
+  }
+  // ===================== VISTA COCINA (pantalla completa, sin login) =====================
+  if (modoVistaCocina) {
+    const pedidosCocina = listaPedidos
+      .filter(p => p.estado === 'recibido' || p.estado === 'en_preparacion' || p.estado === 'en_camino')
+      .sort((a, b) => (a.creado || 0) - (b.creado || 0));
+
+    const BOTON_SIGUIENTE = {
+      recibido: { label: 'Marcar en preparación', clase: 'bg-sky-500 text-white' },
+      en_preparacion: (modo) => ({ label: modo === 'delivery' ? 'Marcar en camino' : 'Marcar listo para retirar', clase: 'bg-bronce-500 text-cafe-900' }),
+      en_camino: { label: 'Marcar entregado', clase: 'bg-green-600 text-white' },
+    };
+
+    return (
+      <div className="min-h-screen bg-cafe-900 text-cafe-50 p-4 sm:p-6">
+        <div className="flex items-center justify-between mb-5">
+          <h1 className="font-heading text-2xl sm:text-3xl font-bold text-bronce-400"><i className="fa-solid fa-kitchen-set mr-2"></i>Cocina</h1>
+          <span className="bg-bronce-500 text-cafe-900 text-xs font-bold px-3 py-1.5 rounded-full">{pedidosCocina.length} pendiente{pedidosCocina.length === 1 ? '' : 's'}</span>
+        </div>
+
+        {pedidosCocina.length === 0 && (
+          <div className="text-center py-24 text-cafe-500">
+            <i className="fa-solid fa-burger text-5xl mb-4"></i>
+            <p className="text-lg">No hay pedidos pendientes.</p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {pedidosCocina.map(p => {
+            const boton = p.estado === 'en_preparacion' ? BOTON_SIGUIENTE.en_preparacion(p.modo) : BOTON_SIGUIENTE[p.estado];
+            return (
+              <div key={p.id} className="bg-cafe-800 border border-cafe-700 rounded-2xl p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <h2 className="font-heading text-xl font-bold text-bronce-300">Pedido #{p.numero} · {etiquetaOrigenPedido(p)}</h2>
+                  <span className="text-cafe-400 text-sm">{horaCorta(p.creado)}</span>
+                </div>
+                <div className="space-y-1 mb-4 text-lg">
+                  {(p.items || []).map((it, idx) => (
+                    <p key={idx}>{it.cantidad}x {it.nombre}</p>
+                  ))}
+                </div>
+                {p.aclaraciones && (
+                  <p className="text-sm bg-bronce-500/10 border border-bronce-400/30 rounded-lg p-2.5 mb-3"><i className="fa-solid fa-circle-info mr-1.5 text-bronce-500"></i>{p.aclaraciones}</p>
+                )}
+                <button
+                  onClick={() => avanzarEstadoPedido(p.id, p.estado)}
+                  className={`w-full py-3 rounded-xl text-base font-bold mb-2 ${boton.clase}`}>
+                  {boton.label}
+                </button>
+                <button
+                  onClick={() => cancelarPedido(p.id)}
+                  className="w-full py-2 rounded-xl text-sm font-bold mb-2 bg-red-50 text-red-600 border border-red-200">
+                  <i className="fa-solid fa-ban mr-1.5"></i>Cancelar pedido
+                </button>
+                <MensajeCocinaInput pedido={p} onGuardar={guardarMensajeCocina} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="pb-24">
+
+      {/* ===================== HEADER NAVBAR ===================== */}
+      <header className="bg-cafe-900 text-cafe-50 sticky top-0 z-40 shadow-xl border-b-4 border-bronce-500 animate-slide-down">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setCategoriaActiva('todas'); setBusqueda(''); }}>
+            {config.logo && <img src={config.logo} alt="Logo" className="w-12 h-12 rounded-full object-cover border-2 border-bronce-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 bg-white" />}
+            <div>
+              <h1 className="text-xl sm:text-2xl font-heading text-brand-outline tracking-wide uppercase transition-transform group-hover:scale-105 leading-none">{NOMBRE_NEGOCIO}</h1>
+              <p className="text-xs text-cafe-200 hidden sm:block opacity-80 mt-1">{TAGLINE}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+            {config.whatsapp && (
+              <a href={`https://wa.me/${config.whatsapp}`} target="_blank" rel="noreferrer" className="text-cafe-300 hover:text-bronce-400 transition-colors text-xl"><i className="fa-brands fa-whatsapp"></i></a>
+            )}
+            {config.instagram && (
+              <a href={`https://instagram.com/${config.instagram}`} target="_blank" rel="noreferrer" className="text-cafe-300 hover:text-bronce-400 transition-colors text-xl"><i className="fa-brands fa-instagram"></i></a>
+            )}
+            <button onClick={abrirCarrito} className="relative p-2 text-cafe-50 hover:text-bronce-400 transition-colors transform hover:scale-110">
+              <i className="fa-solid fa-basket-shopping text-2xl"></i>
+              {carrito.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-vino-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-bounce-slight shadow-lg border border-cafe-900">
+                  {cantidadCarrito}
+                </span>
+              )}
+            </button>
+            <button onClick={() => setMostrarAdminModal(true)} className="text-cafe-500 hover:text-cafe-300 transition-colors text-lg">
+              <i className="fa-solid fa-user-gear"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-4 pt-6">
+        {config.abierto === false && (
+          <div className="mb-6 bg-vino-700 text-white rounded-2xl p-5 text-center shadow-lg animate-fade-in">
+            <p className="font-heading text-2xl mb-1"><i className="fa-solid fa-store-slash mr-2"></i>¡Lo sentimos, estamos cerrados!</p>
+            <p className="text-vino-100 text-sm">En este momento no estamos tomando pedidos. Podés ver el menú, pero el envío de pedidos está desactivado hasta que reabramos.</p>
+          </div>
+        )}
+        {/* ===================== BUSCADOR ===================== */}
+        <div className="relative mb-8 max-w-md mx-auto animate-fade-in delay-100">
+          <input
+            type="text"
+            placeholder="¿Qué tenés ganas de comer hoy?"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="w-full bg-white border-2 border-cafe-200 text-cafe-900 rounded-full py-3 px-12 shadow-sm focus:outline-none focus:border-bronce-400 focus:ring-4 focus:ring-bronce-400/20 transition-all font-semibold"
+          />
+          <i className="fa-solid fa-magnifying-glass absolute left-5 top-4 text-cafe-400"></i>
+          {busqueda && (
+            <button onClick={() => setBusqueda('')} className="absolute right-5 top-3.5 text-cafe-400 hover:text-vino-600 transition-colors">
+              <i className="fa-solid fa-xmark text-lg"></i>
+            </button>
+          )}
+        </div>
+
+        {/* ===================== HERO / DESTACADO ===================== */}
+        {productosDestacados.length > 0 && !busqueda && categoriaActiva === 'todas' && (
+          <div className="mb-10 rounded-2xl overflow-hidden relative shadow-2xl animate-slide-up bg-cafe-900 border-2 border-bronce-500/30 group">
+            <div className="absolute inset-0 bg-gradient-to-t from-cafe-900 via-cafe-900/60 to-transparent z-10"></div>
+            {productosDestacados[sliderIndex % productosDestacados.length].imagen ? (
+              <img
+                key={sliderIndex}
+                src={productosDestacados[sliderIndex % productosDestacados.length].imagen}
+                className="w-full h-64 sm:h-80 object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 animate-fade-in"
+                alt="Destacado" />
+            ) : <div className="w-full h-64 sm:h-80 bg-cafe-800"></div>}
+            <div className="absolute bottom-0 left-0 w-full p-6 z-20">
+              <span className="bg-vino-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block shadow-md">Recomendado</span>
+              <h2 className="text-3xl sm:text-4xl font-heading text-bronce-400 drop-shadow-lg">{productosDestacados[sliderIndex % productosDestacados.length].nombre}</h2>
+              {productosDestacados[sliderIndex % productosDestacados.length].descripcion && (
+                <p className="text-cafe-100 mt-2 max-w-xl text-sm sm:text-base line-clamp-2 drop-shadow">{productosDestacados[sliderIndex % productosDestacados.length].descripcion}</p>
+              )}
+              <div className="mt-4 flex items-center justify-between">
+                <span className="text-2xl font-bold text-white">${productosDestacados[sliderIndex % productosDestacados.length].precio}</span>
+                <button onClick={() => abrirDetalle(productosDestacados[sliderIndex % productosDestacados.length])} className="bg-bronce-500 hover:bg-bronce-400 text-cafe-900 font-bold py-2 px-6 rounded-full shadow-lg transform hover:-translate-y-1 transition-all">
+                  Pedir ahora <i className="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+              </div>
+              {productosDestacados.length > 1 && (
+                <div className="flex gap-1.5 mt-4">
+                  {productosDestacados.map((_, idx) => (
+                    <span key={idx} className={`w-1.5 h-1.5 rounded-full transition-all ${idx === sliderIndex % productosDestacados.length ? 'bg-bronce-400 w-4' : 'bg-cafe-50/40'}`}></span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+      {/* ===================== SEGUÍ TU PEDIDO ===================== */}
+      <div className="mb-8 animate-fade-in delay-100">
+        <div className="bg-cafe-900 rounded-2xl p-4 sm:p-5 shadow-lg">
+          <p className="text-bronce-300 font-heading font-bold text-sm mb-2"><i className="fa-solid fa-magnifying-glass mr-1.5"></i>Seguí tu pedido</p>
+          <div className="flex gap-2">
+            <input
+              value={numeroConsulta}
+              onChange={e => setNumeroConsulta(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && buscarPedido()}
+              placeholder="Número de pedido (ej: 12)"
+              className="flex-1 border border-cafe-700 bg-cafe-800 text-cafe-50 placeholder-cafe-400 rounded-xl p-2.5 text-sm" />
+            <button onClick={buscarPedido} className="bg-bronce-500 text-cafe-900 px-4 rounded-xl text-sm font-bold flex-shrink-0">Ver estado</button>
+          </div>
+
+          {pedidoConsultado === 'notfound' && (
+            <p className="text-vino-500 text-sm mt-3">No encontramos ningún pedido con ese número.</p>
+          )}
+
+          {pedidoConsultado && pedidoConsultado !== 'notfound' && (
+            <div className="mt-3 bg-cafe-800 rounded-xl p-3.5">
+              <div className="flex justify-between items-center mb-2">
+                <p className="font-heading font-bold text-bronce-300">Pedido #{pedidoConsultado.numero}</p>
+                <span className="text-cafe-400 text-xs">{horaCorta(pedidoConsultado.creado)}</span>
+              </div>
+              {pedidoConsultado.estado === 'cancelado' ? (
+                <div className="bg-vino-800/40 border border-vino-500/40 rounded-xl p-3 text-center mb-1">
+                  <p className="text-vino-300 font-heading font-bold"><i className="fa-solid fa-circle-xmark mr-1.5"></i>Pedido cancelado</p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between gap-1 mb-3">
+                    {['recibido', 'en_preparacion', 'en_camino'].map((est, idx) => {
+                      const idxActual = ['recibido', 'en_preparacion', 'en_camino'].indexOf(pedidoConsultado.estado);
+                      const activo = idxActual >= idx || pedidoConsultado.estado === 'entregado' || pedidoConsultado.estado === 'cobrado';
+                      return (
+                        <div key={est} className="flex-1 flex flex-col items-center gap-1">
+                          <div className={`w-full h-1.5 rounded-full ${activo ? 'bg-bronce-500' : 'bg-cafe-700'}`}></div>
+                          <span className={`text-[10px] text-center ${activo ? 'text-bronce-300 font-bold' : 'text-cafe-500'}`}>{etiquetaEstadoPedido(est, pedidoConsultado.modo)}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <p className="text-cafe-50 text-sm font-bold text-center">{etiquetaEstadoPedido(pedidoConsultado.estado, pedidoConsultado.modo)}</p>
+                  {config.tiempoEstimado && (
+                    <p className="text-cafe-400 text-xs text-center mt-1">Tiempo estimado: {config.tiempoEstimado}</p>
+                  )}
+                </>
+              )}
+              {pedidoConsultado.mensaje && (
+                <p className="text-bronce-300 text-xs text-center mt-2 bg-cafe-900 rounded-lg p-2 border border-bronce-500/30"><i className="fa-solid fa-message mr-1"></i>{pedidoConsultado.mensaje}</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ===================== COMBOS Y PROMOS ===================== */}
+      {listaCombos.length > 0 && (
+        <div className="mb-8 animate-fade-in delay-150">
+          <h2 className="font-heading text-lg font-bold text-cafe-900 mb-2 flex items-center gap-2"><i className="fa-solid fa-tags text-vino-600"></i>Combos y Promos</h2>
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+            {listaCombos.map(c => (
+              <div key={c.id} className="flex-shrink-0 w-56 bg-white rounded-lg border-2 border-bronce-400 overflow-hidden filete-borde relative">
+                <span className="absolute top-2 left-2 bg-vino-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">PROMO</span>
+                <div className="w-full h-28 bg-cafe-100">
+                  {c.imagen ? <img src={c.imagen} className="w-full h-full object-cover" /> : (
+                    <div className="w-full h-full flex items-center justify-center text-cafe-300"><i className="fa-solid fa-tags text-2xl"></i></div>
+                  )}
+                </div>
+                <div className="p-3">
+                  <h3 className="font-heading font-bold text-cafe-900 leading-tight text-sm">{c.nombre}</h3>
+                  {c.descripcion && <p className="text-xs text-cafe-500 mt-1 leading-snug line-clamp-2">{c.descripcion}</p>}
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="font-heading font-bold text-vino-600">${c.precio}</p>
+                    <button onClick={() => agregarComboAlCarrito(c)} disabled={config.abierto === false} className="w-8 h-8 rounded-full bg-cafe-900 text-bronce-300 flex items-center justify-center hover:bg-cafe-800 transition flex-shrink-0 disabled:opacity-30">
+                      <i className="fa-solid fa-plus text-xs"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ===================== CATEGORÍAS ===================== */}
+      <div className="flex gap-3 overflow-x-auto no-scrollbar pb-4 mb-6 animate-fade-in delay-200 px-1">
+        <button
+          onClick={() => setCategoriaActiva('todas')}
+          className={`whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm ${categoriaActiva === 'todas' ? 'bg-cafe-900 text-bronce-400 scale-105' : 'bg-white text-cafe-600 hover:bg-cafe-100 border border-cafe-200'}`}
+        >
+          Menú Completo
+        </button>
+        {categoriasConProductos.map(c => (
+          <button
+            key={c}
+            onClick={() => setCategoriaActiva(c)}
+            className={`whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm ${categoriaActiva === c ? 'bg-cafe-900 text-bronce-400 scale-105' : 'bg-white text-cafe-600 hover:bg-cafe-100 border border-cafe-200'}`}
+          >
+            {c}
+          </button>
+        ))}
+      </div>
+
+      {/* ===================== MENÚ / GRILLA ===================== */}
+      <div className="mb-10">
+        {productosFiltrados.length === 0 && (
+          <div className="text-center py-16 animate-fade-in">
+            <i className="fa-solid fa-burger text-6xl text-cafe-200 mb-4 animate-bounce-slight"></i>
+            <h3 className="text-2xl font-heading text-cafe-400">{listaProductos.length === 0 ? 'Todavía no hay ítems cargados' : 'No encontramos lo que buscás'}</h3>
+            <p className="text-cafe-500">{listaProductos.length === 0 ? 'Se van a mostrar acá apenas se cargue el menú.' : 'Probá con otra búsqueda o categoría.'}</p>
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {productosFiltrados.map((p, idx) => (
+            <div key={p.id} className="bg-white rounded-2xl overflow-hidden filete-borde flex flex-col group animate-slide-up cursor-pointer" style={{ animationDelay: `${(idx % 10) * 100}ms` }} onClick={() => abrirDetalle(p)}>
+              <div className="h-48 overflow-hidden relative bg-cafe-50">
+                {p.destacado && (
+                  <div className="absolute top-3 left-3 bg-bronce-500 text-cafe-900 text-xs font-bold px-2 py-1 rounded shadow-md z-10 uppercase tracking-widest"><i className="fa-solid fa-star mr-1"></i>Top</div>
+                )}
+                {p.imagen ? <img src={p.imagen} alt={p.nombre} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> : (
+                  <div className="w-full h-full flex items-center justify-center text-cafe-300"><i className="fa-solid fa-utensils text-3xl"></i></div>
+                )}
+              </div>
+              <div className="p-5 flex-1 flex flex-col">
+                <div className="flex justify-between items-start mb-2 gap-2">
+                  <h3 className="text-xl font-heading text-cafe-900 leading-tight">{p.nombre}</h3>
+                  <span className="text-lg font-bold text-vino-600 flex-shrink-0">${p.precio}</span>
+                </div>
+                {p.descripcion && <p className="text-cafe-500 text-sm mb-4 flex-1 line-clamp-3 leading-relaxed">{p.descripcion}</p>}
+                <button
+                  onClick={(e) => { e.stopPropagation(); abrirDetalle(p); }}
+                  className="w-full bg-cafe-100 text-cafe-800 hover:bg-cafe-900 hover:text-bronce-400 font-bold py-3 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2 mt-auto"
+                >
+                  <i className="fa-solid fa-circle-info"></i> Ver detalle
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ===================== ENCONTRANOS (MAPA + RESEÑAS) ===================== */}
+      {config.direccion && (
+        <div className="mb-10">
+          <h2 className="font-heading text-xl font-bold text-cafe-900 mb-3 text-center">Encontranos</h2>
+          <div className="rounded-xl overflow-hidden filete-borde">
+            <iframe
+              title="Ubicación"
+              width="100%"
+              height="220"
+              style={{ border: 0 }}
+              loading="lazy"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(config.direccion)}&output=embed`}>
+            </iframe>
+          </div>
+          <p className="text-center text-sm text-cafe-600 mt-2"><i className="fa-solid fa-location-dot mr-1.5"></i>{config.direccion}</p>
+          <div className="flex gap-2 mt-3">
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(config.direccion)}`}
+              target="_blank" rel="noreferrer"
+              className="flex-1 bg-cafe-900 text-bronce-300 text-center py-2.5 rounded-xl text-sm font-bold">
+              <i className="fa-solid fa-diamond-turn-right mr-1.5"></i>Cómo llegar
+            </a>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(NOMBRE_NEGOCIO + ' ' + config.direccion)}`}
+              target="_blank" rel="noreferrer"
+              className="flex-1 bg-white border border-cafe-200 text-cafe-800 text-center py-2.5 rounded-xl text-sm font-bold">
+              <i className="fa-solid fa-star text-bronce-500 mr-1.5"></i>Ver reseñas
+            </a>
+          </div>
+        </div>
+      )}
+
+        {/* ===================== FOOTER ===================== */}
+        <footer className="text-center text-xs text-cafe-400 pb-4">
+          <p>{NOMBRE_NEGOCIO} — {TAGLINE}</p>
+        </footer>
+      </main>
+
+      {/* ===================== BOTÓN CHATBOT ===================== */}
+      <button
+        onClick={abrirChat}
+        className="fixed bottom-5 left-5 z-40 bg-celeste-500 text-white w-11 h-11 rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition animate-pulse-slow"
+        title="Preguntas frecuentes">
+        <i className="fa-solid fa-comment-dots"></i>
+      </button>
+
+      {/* ===================== MODAL CHATBOT ===================== */}
+      {mostrarChat && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="bg-cafe-50 w-full sm:max-w-sm sm:rounded-2xl rounded-t-3xl max-h-[85vh] overflow-y-auto animate-slide-up flex flex-col">
+            <div className="sticky top-0 bg-cafe-900 text-bronce-300 px-5 py-3.5 flex justify-between items-center flex-shrink-0">
+              <h3 className="font-heading font-bold"><i className="fa-solid fa-comment-dots mr-2"></i>Preguntas frecuentes</h3>
+              <button onClick={() => setMostrarChat(false)} className="text-bronce-300/80 hover:text-bronce-300"><i className="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div className="p-4 space-y-3">
+              {!preguntaActiva ? (
+                <>
+                  <div className="bg-white filete-borde rounded-2xl rounded-tl-sm p-3 text-sm text-cafe-800">
+                    {chatbotConfig.saludo || SALUDO_BOT_DEFAULT}
+                  </div>
+                  <div className="space-y-1.5">
+                    {listaPreguntasBot.length === 0 && <p className="text-cafe-400 text-xs text-center py-3">Todavía no hay preguntas cargadas.</p>}
+                    {listaPreguntasBot.map(p => (
+                      <button key={p.id} onClick={() => setPreguntaActiva(p)} className="w-full text-left bg-white border border-cafe-200 hover:border-bronce-400 rounded-xl px-3.5 py-2.5 text-sm text-cafe-800 font-medium transition">
+                        {p.pregunta}
+                      </button>
+                    ))}
+                    {config.whatsapp && (
+                      <a href={`https://wa.me/${config.whatsapp}`} target="_blank" className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white rounded-xl px-3.5 py-2.5 text-sm font-bold mt-2">
+                        <i className="fa-brands fa-whatsapp"></i>Hablar con nosotros
+                      </a>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="bg-cafe-900 text-bronce-200 rounded-2xl rounded-tr-sm p-3 text-sm ml-8">{preguntaActiva.pregunta}</div>
+                  <div className="bg-white filete-borde rounded-2xl rounded-tl-sm p-3 text-sm text-cafe-800 mr-4">{preguntaActiva.respuesta}</div>
+                  <button onClick={() => setPreguntaActiva(null)} className="w-full bg-cafe-100 text-cafe-700 rounded-xl py-2.5 text-sm font-bold mt-1">
+                    <i className="fa-solid fa-arrow-left mr-1.5"></i>Volver a las preguntas
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===================== PANEL CARRITO LATERAL ===================== */}
+      {/* ===================== BARRA FLOTANTE DE CARRITO ===================== */}
+      {carrito.length > 0 && !mostrarCarrito && (
+        <button
+          onClick={abrirCarrito}
+          className="fixed bottom-4 left-4 right-4 z-30 max-w-md mx-auto bg-cafe-900 text-bronce-300 rounded-2xl shadow-2xl px-5 py-4 flex items-center justify-between animate-slide-up border border-bronce-500/30">
+          <span className="flex items-center gap-2 font-bold text-sm">
+            <span className="bg-bronce-500 text-cafe-900 w-6 h-6 rounded-full flex items-center justify-center text-xs">{cantidadCarrito}</span>
+            {cantidadCarrito === 1 ? 'producto' : 'productos'}
+          </span>
+          <span className="font-heading text-lg">${totalCarrito}</span>
+          <span className="text-xs font-bold flex items-center gap-1">Ver pedido<i className="fa-solid fa-arrow-right"></i></span>
+        </button>
+      )}
+
+      {mostrarCarrito && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-cafe-900/60 backdrop-blur-sm animate-fade-in" onClick={() => confirmacionPedido ? cerrarConfirmacionPedido() : setMostrarCarrito(false)}></div>
+          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-up sm:animate-fade-in">
+            <div className="p-5 bg-cafe-900 text-bronce-400 flex justify-between items-center border-b-4 border-bronce-500 flex-shrink-0">
+              <h2 className="text-2xl font-heading"><i className="fa-solid fa-basket-shopping mr-2"></i>{confirmacionPedido ? '¡Listo!' : 'Tu Pedido'}</h2>
+              <button onClick={confirmacionPedido ? cerrarConfirmacionPedido : () => setMostrarCarrito(false)} className="text-cafe-50 hover:text-vino-500 text-xl transition-colors"><i className="fa-solid fa-xmark"></i></button>
+            </div>
+
+            {confirmacionPedido ? (
+              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-4 bg-papel">
+                <div className="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto text-2xl">
+                  <i className="fa-solid fa-check"></i>
+                </div>
+                <p className="text-cafe-800 font-medium">{confirmacionPedido}</p>
+                {ultimoLinkWsp && (
+                  <a href={ultimoLinkWsp} target="_blank" rel="noreferrer" className="text-bronce-600 text-xs underline flex items-center gap-1.5">
+                    <i className="fa-brands fa-whatsapp"></i>¿No se abrió WhatsApp? Tocá acá para abrirlo
+                  </a>
+                )}
+                <button onClick={cerrarConfirmacionPedido} className="w-full bg-cafe-900 text-bronce-300 py-3 rounded-xl text-sm font-bold">Cerrar</button>
+              </div>
+            ) : (
+              <>
+                <div className="flex-1 overflow-y-auto p-5 bg-papel">
+                  {carrito.length === 0 ? (
+                    <div className="text-center text-cafe-400 mt-10">
+                      <i className="fa-solid fa-bag-shopping text-5xl mb-3 opacity-50"></i>
+                      <p className="font-semibold">El carrito está vacío</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {carrito.map(it => (
+                        <div key={it.id} className="flex gap-3 items-center bg-white p-3 rounded-xl shadow-sm border border-cafe-100">
+                          {it.imagen ? <img src={it.imagen} className="w-16 h-16 rounded-lg object-cover flex-shrink-0" alt={it.nombre} /> : (
+                            <div className="w-16 h-16 rounded-lg bg-cafe-100 flex items-center justify-center text-cafe-300 flex-shrink-0"><i className="fa-solid fa-utensils"></i></div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-cafe-900 leading-tight truncate">{it.nombre}</h4>
+                            <span className="text-vino-600 font-bold text-sm">${it.precio} c/u</span>
+                            {it.productoId && productos[it.productoId] && (
+                              <button onClick={() => editarItemCarrito(it)} className="block text-cafe-400 text-[11px] mt-0.5 underline"><i className="fa-solid fa-pen mr-1"></i>Editar</button>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <button onClick={() => cambiarCantidadCarrito(it.id, -1)} className="w-7 h-7 rounded-full bg-cafe-50 text-cafe-700 flex items-center justify-center hover:bg-cafe-200 transition-colors"><i className="fa-solid fa-minus text-xs"></i></button>
+                            <span className="w-5 text-center font-bold text-sm">{it.cantidad}</span>
+                            <button onClick={() => cambiarCantidadCarrito(it.id, 1)} className="w-7 h-7 rounded-full bg-cafe-900 text-bronce-300 flex items-center justify-center"><i className="fa-solid fa-plus text-xs"></i></button>
+                          </div>
+                        </div>
+                      ))}
+
+                      <div className="pt-3 space-y-4">
+                        <div>
+                          <p className="text-xs font-bold text-cafe-600 mb-1.5">¿Cómo lo vas a consumir?</p>
+                          <div className="grid grid-cols-2 gap-2">
+                            {[['takeaway','Take away'],['delivery','Delivery']].map(([id,label]) => (
+                              <button key={id} onClick={() => { setModoConsumo(id); setMetodoPagoSel(null); }} className={`py-2.5 rounded-xl text-xs font-bold border transition-colors ${modoConsumo===id ? 'bg-cafe-900 text-bronce-300 border-cafe-900' : 'bg-white text-cafe-600 border-cafe-200 hover:bg-cafe-100'}`}>{label}</button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {modoConsumo === 'takeaway' && (
+                          <input value={pedidoForm.nombre} onChange={e => setPedidoForm({...pedidoForm, nombre: e.target.value})} placeholder="Tu nombre" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-bronce-400" />
+                        )}
+                        {modoConsumo === 'delivery' && (
+                          <div className="space-y-2">
+                            <input value={pedidoForm.nombre} onChange={e => setPedidoForm({...pedidoForm, nombre: e.target.value})} placeholder="Tu nombre" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-bronce-400" />
+                            <input value={pedidoForm.telefono} onChange={e => setPedidoForm({...pedidoForm, telefono: e.target.value})} placeholder="Teléfono" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-bronce-400" />
+                            <input value={pedidoForm.direccion} onChange={e => setPedidoForm({...pedidoForm, direccion: e.target.value})} placeholder="Dirección de entrega" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-bronce-400" />
+                          </div>
+                        )}
+
+                        <textarea value={pedidoForm.aclaraciones} onChange={e => setPedidoForm({...pedidoForm, aclaraciones: e.target.value})} placeholder="Aclaraciones (opcional): sin sal, alergias, referencias para llegar, etc." rows="2" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-bronce-400 resize-none" />
+
+                        {!config.whatsapp && <p className="text-vino-600 text-xs">Falta cargar el WhatsApp del local en Configuración.</p>}
+
+                        {puedeEnviarPedido() && (
+                          <div>
+                            <p className="text-xs font-bold text-cafe-600 mb-1.5">¿Cómo vas a pagar?</p>
+                            <div className="grid grid-cols-2 gap-2">
+                              <button onClick={() => confirmarMetodoPago('efectivo')} className={`py-2.5 rounded-xl text-xs font-bold border transition-colors ${metodoPagoSel==='efectivo' ? 'bg-cafe-900 text-bronce-300 border-cafe-900' : 'bg-white text-cafe-600 border-cafe-200 hover:bg-cafe-100'}`}>
+                                <i className="fa-solid fa-money-bill-wave block mb-0.5"></i>Efectivo
+                              </button>
+                              <button onClick={() => confirmarMetodoPago('transferencia')} disabled={!config.alias} className={`py-2.5 rounded-xl text-xs font-bold border disabled:opacity-30 transition-colors ${metodoPagoSel==='transferencia' ? 'bg-cafe-900 text-bronce-300 border-cafe-900' : 'bg-white text-cafe-600 border-cafe-200 hover:bg-cafe-100'}`}>
+                                <i className="fa-solid fa-right-left block mb-0.5"></i>Transferencia
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {metodoPagoSel === 'efectivo' && (
+                          <div className="bg-white border border-cafe-200 rounded-xl p-3 shadow-sm">
+                            <p className="text-xs font-bold text-cafe-700 mb-1.5">¿Con cuánto vas a pagar?</p>
+                            <input type="number" inputMode="numeric" value={montoEfectivo} onChange={e => setMontoEfectivo(e.target.value)} placeholder={`Ej: ${totalCarrito}`} className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-bronce-400" />
+                          </div>
+                        )}
+                        {metodoPagoSel === 'transferencia' && (
+                          <div className="bg-white border border-cafe-200 rounded-xl p-3 text-center shadow-sm">
+                            <p className="text-xs text-cafe-600 mb-1">Transferí a este alias:</p>
+                            <p className="font-heading font-bold text-lg text-cafe-900 break-all">{config.alias}</p>
+                            <p className="text-xs text-vino-600 mt-2">Enviá tu comprobante de pago y el número de pedido al WhatsApp.</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {carrito.length > 0 && (
+                  <div className="p-6 bg-white border-t border-cafe-200 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] flex-shrink-0">
+                    {errorEnvioPedido && (
+                      <p className="text-vino-600 text-xs font-bold text-center mb-3 bg-vino-500/10 rounded-lg p-2">{errorEnvioPedido}</p>
+                    )}
+                    <div className="flex justify-between items-end mb-4">
+                      <span className="text-cafe-500 font-bold">Total a pagar:</span>
+                      <span className="text-3xl font-heading text-cafe-900">${totalCarrito}</span>
+                    </div>
+                    <button
+                      onClick={() => setMostrarConfirmarEnvio(true)}
+                      disabled={!puedeEnviarPedido() || !metodoPagoSel || (metodoPagoSel==='efectivo' && !montoEfectivo) || !config.whatsapp || enviandoPedido}
+                      className="w-full bg-bronce-500 hover:bg-bronce-400 disabled:opacity-40 disabled:hover:bg-bronce-500 text-cafe-900 font-heading text-lg py-4 rounded-xl shadow-lg transition-transform transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                      <i className="fa-brands fa-whatsapp text-xl"></i>{enviandoPedido ? 'Enviando...' : 'Enviar Pedido'}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ===================== CONFIRMAR ANTES DE ENVIAR ===================== */}
+      {mostrarConfirmarEnvio && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-cafe-900/70 backdrop-blur-sm animate-fade-in" onClick={() => setMostrarConfirmarEnvio(false)}></div>
+          <div className="relative bg-white w-full sm:max-w-sm rounded-2xl shadow-2xl p-6 text-center animate-slide-up">
+            <i className="fa-solid fa-circle-question text-4xl text-bronce-500 mb-3"></i>
+            <h3 className="text-xl font-heading text-cafe-900 mb-1">¿Confirmás tu pedido?</h3>
+            <p className="text-cafe-500 text-sm mb-5">Una vez confirmado, el pedido pasa directo a cocina y se abre WhatsApp para avisar al local. No vas a poder editarlo después.</p>
+            <p className="font-heading text-2xl text-vino-600 mb-5">${totalCarrito}</p>
+            <div className="flex gap-2">
+              <button onClick={() => setMostrarConfirmarEnvio(false)} className="flex-1 bg-cafe-100 text-cafe-700 py-3 rounded-xl font-bold text-sm">Revisar de nuevo</button>
+              <button onClick={() => { const w = window.open('', '_blank'); setMostrarConfirmarEnvio(false); enviarPedido(w); }} className="flex-1 bg-bronce-500 hover:bg-bronce-400 text-cafe-900 py-3 rounded-xl font-bold text-sm">Sí, confirmar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===================== MODAL DETALLE DE PRODUCTO ===================== */}
+      {productoDetalle && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-cafe-900/70 backdrop-blur-sm animate-fade-in" onClick={cerrarDetalle}></div>
+          <div className="relative bg-white w-full sm:max-w-lg rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col animate-slide-up">
+            <div className="h-32 bg-cafe-50 relative flex-shrink-0">
+              <button onClick={cerrarDetalle} className="absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full bg-cafe-900/70 text-white flex items-center justify-center text-sm"><i className="fa-solid fa-xmark"></i></button>
+              {productoDetalle.imagen ? (
+                <img src={productoDetalle.imagen} alt={productoDetalle.nombre} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-cafe-300"><i className="fa-solid fa-utensils text-3xl"></i></div>
+              )}
+            </div>
+
+            <div className="p-4 space-y-3 overflow-y-auto flex-1 min-h-0">
+              <div className="flex justify-between items-start gap-3">
+                <h3 className="text-lg font-heading text-cafe-900 leading-tight">{productoDetalle.nombre}</h3>
+                <span className="text-lg font-bold text-vino-600 flex-shrink-0">${productoDetalle.precio}</span>
+              </div>
+              {productoDetalle.descripcion && (
+                <p className="text-cafe-600 text-xs leading-relaxed">{productoDetalle.descripcion}</p>
+              )}
+
+              {(productoDetalle.sabores || []).length > 0 && (
+                <div>
+                  <p className="text-[11px] font-bold text-cafe-500 uppercase tracking-wider mb-1.5">Elegí el sabor</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {productoDetalle.sabores.map((s, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSaborSel(s)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${saborSel === s ? 'bg-cafe-900 text-bronce-300 border-cafe-900' : 'bg-white text-cafe-600 border-cafe-200 hover:bg-cafe-100'}`}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {(productoDetalle.opciones || []).length > 0 && (
+                <div>
+                  <p className="text-[11px] font-bold text-cafe-500 uppercase tracking-wider mb-1.5">Personalizá tu pedido</p>
+                  <div className="space-y-1">
+                    {productoDetalle.opciones.map((o, idx) => (
+                      <label key={idx} className="flex items-center justify-between bg-cafe-50 rounded-lg px-2.5 py-2 text-xs cursor-pointer">
+                        <span className="flex items-center gap-2 text-cafe-800 font-semibold">
+                          <input type="checkbox" checked={opcionesSel.includes(o.nombre)} onChange={() => toggleOpcionDetalle(o.nombre)} className="w-3.5 h-3.5" />
+                          {o.nombre}
+                        </span>
+                        {Number(o.precioExtra) > 0 && <span className="text-vino-600 font-bold text-xs">+${o.precioExtra}</span>}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex-shrink-0 border-t border-cafe-100 p-4">
+              {config.abierto === false ? (
+                <p className="text-center text-vino-600 text-xs font-bold bg-vino-500/10 rounded-xl py-2.5">Estamos cerrados, no se pueden agregar pedidos ahora.</p>
+              ) : (
+                <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-1.5 bg-cafe-100 rounded-xl px-1.5 py-1.5 flex-shrink-0">
+                    <button onClick={() => setCantidadDetalle(c => Math.max(1, c - 1))} className="w-7 h-7 rounded-lg bg-white text-cafe-800 font-bold shadow-sm">−</button>
+                    <span className="font-heading text-sm w-5 text-center">{cantidadDetalle}</span>
+                    <button onClick={() => setCantidadDetalle(c => c + 1)} className="w-7 h-7 rounded-lg bg-white text-cafe-800 font-bold shadow-sm">+</button>
+                  </div>
+                  <button
+                    onClick={agregarDetalleAlCarrito}
+                    className="flex-1 bg-bronce-500 hover:bg-bronce-400 text-cafe-900 font-heading text-base py-3 rounded-xl shadow-lg transition-transform transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                  <i className="fa-solid fa-plus"></i>{editandoCartId ? 'Guardar cambios' : 'Agregar al pedido'} — ${(productoDetalle.precio + (productoDetalle.opciones || []).filter(o => opcionesSel.includes(o.nombre)).reduce((a, o) => a + (Number(o.precioExtra) || 0), 0)) * cantidadDetalle}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===================== MODAL ADMIN ===================== */}
+      {mostrarAdminModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-cafe-900/80 backdrop-blur-sm animate-fade-in" onClick={() => !isAdmin && setMostrarAdminModal(false)}></div>
+          <div className="relative bg-cafe-50 w-full sm:max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[92vh] overflow-y-auto animate-slide-up">
+            <div className="sticky top-0 bg-cafe-900 text-bronce-300 px-5 py-3.5 flex justify-between items-center border-b-4 border-bronce-500 z-10">
+              <h3 className="font-heading font-bold"><i className="fa-solid fa-lock mr-2"></i>{isAdmin ? 'Administración' : 'Ingresar'}</h3>
+              <button onClick={() => setMostrarAdminModal(false)} className="text-cafe-50 hover:text-vino-500 transition-colors"><i className="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            {!isAdmin ? (
+              <div className="p-6 space-y-3">
+                <input value={usuario} onChange={e => setUsuario(e.target.value)} placeholder="Usuario" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                <input value={contrasena} onChange={e => setContrasena(e.target.value)} type="password" placeholder="Contraseña" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" onKeyDown={e => e.key === 'Enter' && intentarLogin()} />
+                {errorLogin && <p className="text-vino-600 text-xs animate-bounce-slight">{errorLogin}</p>}
+                <button onClick={intentarLogin} className="w-full bg-cafe-900 text-bronce-300 py-2.5 rounded-xl text-sm font-bold hover:bg-cafe-800">Entrar</button>
+              </div>
+            ) : (
+              <div className="p-4">
+                <div className="flex gap-1.5 mb-4 overflow-x-auto no-scrollbar">
+                  {[['pedidos','Pedidos'],['productos','Menú'],['combos','Combos'],['categorias','Categorías'],['chatbot','Chatbot'],['config','Configuración']].map(([id,label]) => (
+                    <button key={id} onClick={() => setAdminTab(id)} className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold ${adminTab===id ? 'bg-cafe-900 text-bronce-300' : 'bg-cafe-100 text-cafe-600'}`}>{label}</button>
+                  ))}
+                  <button onClick={cerrarSesion} className="ml-auto flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-vino-600 text-white">Salir</button>
+                </div>
+
+                {adminTab === 'pedidos' && (
+                  <div className="space-y-3">
+                    <a
+                      href={linkCocina()} target="_blank" rel="noreferrer"
+                      className="flex items-center justify-center gap-2 bg-cafe-900 text-bronce-300 py-2.5 rounded-xl text-xs font-bold">
+                      <i className="fa-solid fa-kitchen-set"></i>Abrir vista cocina (para tablet/pantalla en la cocina)
+                    </a>
+                    {listaPedidos.length === 0 && <p className="text-cafe-400 text-xs text-center py-6">Todavía no llegó ningún pedido.</p>}
+                    {listaPedidos.map(p => (
+                      <div key={p.id} className={`border border-cafe-100 rounded-xl p-3 bg-white ${p.estado === 'cobrado' || p.estado === 'cancelado' ? 'opacity-50' : ''}`}>
+                        <div className="flex justify-between items-start mb-1.5">
+                          <div>
+                            <p className="font-heading font-bold text-cafe-900">#{p.numero} · {etiquetaOrigenPedido(p)}</p>
+                            <p className="text-[10px] text-cafe-400">{horaCorta(p.creado)}</p>
+                          </div>
+                          <p className="font-heading font-bold text-vino-600">${p.total}</p>
+                        </div>
+                        <div className="text-xs text-cafe-600 space-y-0.5 mb-2.5">
+                          {(p.items || []).map((it, idx) => (
+                            <p key={idx}>{it.cantidad}x {it.nombre}</p>
+                          ))}
+                        </div>
+                        {p.aclaraciones && (
+                          <p className="text-[11px] bg-bronce-500/10 border border-bronce-400/30 rounded-lg p-2 mb-2.5"><i className="fa-solid fa-circle-info mr-1 text-bronce-500"></i>{p.aclaraciones}</p>
+                        )}
+                        <button
+                          onClick={() => avanzarEstadoPedido(p.id, p.estado)}
+                          disabled={p.estado === 'cobrado' || p.estado === 'cancelado'}
+                          className={`w-full py-2 rounded-xl text-xs font-bold ${ESTADO_ESTILO[p.estado] || ESTADO_ESTILO.recibido}`}>
+                          {ESTADO_LABEL[p.estado] || 'Recibido'}{p.estado !== 'cobrado' && p.estado !== 'cancelado' && ' · tocar para avanzar'}
+                        </button>
+                        {p.estado !== 'cancelado' && p.estado !== 'cobrado' && (
+                          <button onClick={() => cancelarPedido(p.id)} className="w-full py-1.5 rounded-xl text-[11px] font-bold mt-1.5 bg-red-50 text-red-600 border border-red-200">
+                            <i className="fa-solid fa-ban mr-1"></i>Cancelar pedido
+                          </button>
+                        )}
+                        <div className="mt-2">
+                          <MensajeCocinaInput pedido={p} onGuardar={guardarMensajeCocina} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {adminTab === 'productos' && (
+                  <div className="space-y-4">
+                    <div className="border border-cafe-200 rounded-xl p-3 space-y-2 bg-white">
+                      <h4 className="font-bold text-xs uppercase tracking-wider text-cafe-400">{editandoId ? 'Editar ítem' : 'Nuevo ítem del menú'}</h4>
+                      <input value={form.nombre} onChange={e => setForm({...form, nombre: e.target.value})} placeholder="Nombre del plato/bebida" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                      <select value={form.categoria} onChange={e => setForm({...form, categoria: e.target.value})} className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm bg-white">
+                        <option value="">Elegir categoría...</option>
+                        {categorias.map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                      {categorias.length === 0 && <p className="text-xs text-vino-600">Primero cargá una categoría en la pestaña "Categorías".</p>}
+                      <textarea value={form.descripcion} onChange={e => setForm({...form, descripcion: e.target.value})} placeholder="Descripción breve" rows="2" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm"></textarea>
+                      <input value={form.precio} onChange={e => setForm({...form, precio: e.target.value})} type="number" placeholder="Precio" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                      <div className="flex items-center gap-3">
+                        <label className="flex-shrink-0 bg-cafe-100 text-cafe-700 text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">
+                          <i className="fa-solid fa-camera mr-1.5"></i>Foto
+                          <input type="file" accept="image/*" onChange={handleImagenProducto} className="hidden" />
+                        </label>
+                        {form.imagen && <img src={form.imagen} className="w-12 h-12 rounded-lg object-cover" />}
+                      </div>
+
+                      <label className="flex items-center gap-2 text-xs font-bold text-cafe-600">
+                        <input type="checkbox" checked={!!form.destacado} onChange={e => setForm({...form, destacado: e.target.checked})} className="w-4 h-4" />
+                        Mostrar en el banner de destacados del inicio
+                      </label>
+
+                      <div className="border-t border-cafe-100 pt-2">
+                        <p className="text-xs font-bold text-cafe-500 mb-1.5">Opciones de personalización (ej: sin cebolla, agregar cheddar, agregar medallón)</p>
+                        {(form.opciones || []).length > 0 && (
+                          <div className="space-y-1 mb-2">
+                            {form.opciones.map((o, idx) => (
+                              <div key={idx} className="flex items-center justify-between bg-cafe-50 rounded-lg px-2 py-1 text-xs">
+                                <span>{o.nombre}{Number(o.precioExtra) > 0 ? ` (+$${o.precioExtra})` : ''}</span>
+                                <button onClick={() => quitarOpcionProducto(idx)} className="text-vino-600"><i className="fa-solid fa-xmark"></i></button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex gap-1.5">
+                          <input value={opcionProdNombre} onChange={e => setOpcionProdNombre(e.target.value)} placeholder="Ej: Sin cebolla, Agregar cheddar..." className="flex-1 border border-cafe-200 rounded-lg p-2 text-xs" />
+                          <input value={opcionProdPrecio} onChange={e => setOpcionProdPrecio(e.target.value)} type="number" placeholder="Extra $" className="w-20 border border-cafe-200 rounded-lg p-2 text-xs" />
+                          <button onClick={agregarOpcionProducto} className="bg-cafe-900 text-bronce-300 px-3 rounded-lg text-xs font-bold">+</button>
+                        </div>
+                        <p className="text-[11px] text-cafe-400 mt-1">Dejá el precio extra vacío o en 0 para opciones sin costo (ej: sin cebolla).</p>
+                      </div>
+
+                      <div className="border-t border-cafe-100 pt-2">
+                        <p className="text-xs font-bold text-cafe-500 mb-1.5">Sabores a elegir (para bebidas, ej: Coca, Fanta, Sprite)</p>
+                        {(form.sabores || []).length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 mb-2">
+                            {form.sabores.map((s, idx) => (
+                              <span key={idx} className="flex items-center gap-1.5 bg-cafe-50 rounded-full px-2.5 py-1 text-xs">
+                                {s}
+                                <button onClick={() => quitarSaborProducto(idx)} className="text-vino-600"><i className="fa-solid fa-xmark"></i></button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex gap-1.5">
+                          <input value={saborProdInput} onChange={e => setSaborProdInput(e.target.value)} placeholder="Ej: Coca-Cola" className="flex-1 border border-cafe-200 rounded-lg p-2 text-xs" />
+                          <button onClick={agregarSaborProducto} className="bg-cafe-900 text-bronce-300 px-3 rounded-lg text-xs font-bold">+</button>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button onClick={guardarProducto} className="flex-1 bg-cafe-900 text-bronce-300 py-2 rounded-xl text-xs font-bold">{editandoId ? 'Guardar cambios' : 'Agregar al menú'}</button>
+                        {editandoId && <button onClick={resetForm} className="px-4 bg-cafe-100 rounded-xl text-xs font-bold">Cancelar</button>}
+                      </div>
+                    </div>
+
+                    {listaProductos.length === 0 && (
+                      <button onClick={cargarMenuInicial} className="w-full bg-vino-600 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                        <i className="fa-solid fa-burger"></i>Cargar menú inicial de Waysty (burgers, papas, nuggets, bebidas y combos)
+                      </button>
+                    )}
+
+                    <div className="space-y-1.5">
+                      {listaProductos.length === 0 && <p className="text-cafe-400 text-xs text-center py-4">Todavía no cargaste ítems.</p>}
+                      {listaProductos.map(p => (
+                        <div key={p.id} className="flex items-center gap-2.5 border border-cafe-100 bg-white p-2 rounded-xl text-xs">
+                          <div className="w-9 h-9 rounded-lg bg-cafe-100 flex-shrink-0 overflow-hidden">{p.imagen && <img src={p.imagen} className="w-full h-full object-cover" />}</div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-cafe-800 truncate">{p.nombre}</p>
+                            <p className="text-cafe-400">{p.categoria} · ${p.precio}</p>
+                          </div>
+                          <button onClick={() => editarProducto(p)} className="text-cafe-500 px-1.5"><i className="fa-solid fa-pen"></i></button>
+                          <button onClick={() => eliminarProducto(p.id)} className="text-vino-600 px-1.5"><i className="fa-solid fa-trash-can"></i></button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {adminTab === 'combos' && (
+                  <div className="space-y-4">
+                    <p className="text-xs text-cafe-500">Los combos y promos aparecen destacados arriba del menú, con su propio precio fijo, y se piden igual que cualquier ítem.</p>
+                    <div className="border border-cafe-200 rounded-xl p-3 space-y-2 bg-white">
+                      <h4 className="font-bold text-xs uppercase tracking-wider text-cafe-400">{editandoComboId ? 'Editar combo/promo' : 'Nuevo combo/promo'}</h4>
+                      <input value={comboForm.nombre} onChange={e => setComboForm({...comboForm, nombre: e.target.value})} placeholder="Ej: Combo Doble + Papas + Gaseosa" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                      <textarea value={comboForm.descripcion} onChange={e => setComboForm({...comboForm, descripcion: e.target.value})} placeholder="Descripción breve" rows="2" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm"></textarea>
+                      <input value={comboForm.precio} onChange={e => setComboForm({...comboForm, precio: e.target.value})} type="number" placeholder="Precio del combo" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                      <div className="flex items-center gap-3">
+                        <label className="flex-shrink-0 bg-cafe-100 text-cafe-700 text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">
+                          <i className="fa-solid fa-camera mr-1.5"></i>Foto
+                          <input type="file" accept="image/*" onChange={handleImagenCombo} className="hidden" />
+                        </label>
+                        {comboForm.imagen && <img src={comboForm.imagen} className="w-12 h-12 rounded-lg object-cover" />}
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button onClick={guardarCombo} className="flex-1 bg-vino-600 text-white py-2 rounded-xl text-xs font-bold">{editandoComboId ? 'Guardar cambios' : 'Agregar combo/promo'}</button>
+                        {editandoComboId && <button onClick={resetComboForm} className="px-4 bg-cafe-100 rounded-xl text-xs font-bold">Cancelar</button>}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {listaCombos.length === 0 && <p className="text-cafe-400 text-xs text-center py-4">Todavía no cargaste combos ni promos.</p>}
+                      {listaCombos.map(c => (
+                        <div key={c.id} className="flex items-center gap-2.5 border border-cafe-100 bg-white p-2 rounded-xl text-xs">
+                          <div className="w-9 h-9 rounded-lg bg-cafe-100 flex-shrink-0 overflow-hidden">{c.imagen && <img src={c.imagen} className="w-full h-full object-cover" />}</div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-cafe-800 truncate">{c.nombre}</p>
+                            <p className="text-cafe-400">${c.precio}</p>
+                          </div>
+                          <button onClick={() => editarCombo(c)} className="text-cafe-500 px-1.5"><i className="fa-solid fa-pen"></i></button>
+                          <button onClick={() => eliminarCombo(c.id)} className="text-vino-600 px-1.5"><i className="fa-solid fa-trash-can"></i></button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {adminTab === 'categorias' && (
+                  <div className="space-y-4">
+                    <div className="flex gap-2">
+                      <input value={nuevaCategoria} onChange={e => setNuevaCategoria(e.target.value)} placeholder="Ej: Hamburguesas, Papas, Nuggets, Bebidas..." className="flex-1 border border-cafe-200 rounded-xl p-2.5 text-sm" onKeyDown={e => e.key==='Enter' && agregarCategoria()} />
+                      <button onClick={agregarCategoria} className="bg-cafe-900 text-bronce-300 px-4 rounded-xl text-sm font-bold">Agregar</button>
+                    </div>
+                    <div className="space-y-1.5">
+                      {categorias.length === 0 && <p className="text-cafe-400 text-xs">Todavía no cargaste categorías.</p>}
+                      {categorias.map(c => (
+                        <div key={c} className="flex justify-between items-center border border-cafe-100 bg-white p-2.5 rounded-xl text-sm">
+                          <span className="text-cafe-800 font-medium">{c}</span>
+                          <button onClick={() => eliminarCategoria(c)} className="text-vino-600"><i className="fa-solid fa-trash-can"></i></button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {adminTab === 'chatbot' && (
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-xs font-bold text-cafe-600 block mb-1">Saludo inicial</label>
+                      <textarea value={chatSaludoInput} onChange={e => setChatSaludoInput(e.target.value)} placeholder={SALUDO_BOT_DEFAULT} rows="2" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm"></textarea>
+                      <button onClick={guardarSaludoBot} className="mt-1.5 bg-cafe-900 text-bronce-300 px-4 py-1.5 rounded-xl text-xs font-bold">Guardar saludo</button>
+                    </div>
+
+                    <div className="border border-cafe-200 rounded-xl p-3 space-y-2 bg-white">
+                      <h4 className="font-bold text-xs uppercase tracking-wider text-cafe-400">{editandoPreguntaId ? 'Editar pregunta' : 'Nueva pregunta'}</h4>
+                      <input value={preguntaForm.pregunta} onChange={e => setPreguntaForm({...preguntaForm, pregunta: e.target.value})} placeholder="Ej: ¿Hacen delivery?" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                      <textarea value={preguntaForm.respuesta} onChange={e => setPreguntaForm({...preguntaForm, respuesta: e.target.value})} placeholder="Respuesta" rows="2" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm"></textarea>
+                      <div className="flex gap-2">
+                        <button onClick={guardarPreguntaBot} className="flex-1 bg-cafe-900 text-bronce-300 py-2 rounded-xl text-xs font-bold">{editandoPreguntaId ? 'Guardar cambios' : 'Agregar pregunta'}</button>
+                        {editandoPreguntaId && <button onClick={resetPreguntaBotForm} className="px-4 bg-cafe-100 rounded-xl text-xs font-bold">Cancelar</button>}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {listaPreguntasBot.length === 0 && <p className="text-cafe-400 text-xs text-center py-4">Todavía no cargaste preguntas.</p>}
+                      {listaPreguntasBot.map(p => (
+                        <div key={p.id} className="flex items-center gap-2.5 border border-cafe-100 bg-white p-2 rounded-xl text-xs">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-cafe-800 truncate">{p.pregunta}</p>
+                            <p className="text-cafe-400 truncate">{p.respuesta}</p>
+                          </div>
+                          <button onClick={() => editarPreguntaBot(p)} className="text-cafe-500 px-1.5"><i className="fa-solid fa-pen"></i></button>
+                          <button onClick={() => eliminarPreguntaBot(p.id)} className="text-vino-600 px-1.5"><i className="fa-solid fa-trash-can"></i></button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {adminTab === 'config' && (
+                  <div className="space-y-3">
+                    <div className={`rounded-xl p-3.5 flex items-center justify-between gap-3 border ${config.abierto !== false ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                      <div>
+                        <p className={`font-bold text-sm ${config.abierto !== false ? 'text-green-700' : 'text-red-700'}`}>
+                          <i className={`fa-solid ${config.abierto !== false ? 'fa-circle-check' : 'fa-circle-xmark'} mr-1.5`}></i>
+                          {config.abierto !== false ? 'Local abierto' : 'Local cerrado'}
+                        </p>
+                        <p className="text-[11px] text-cafe-500 mt-0.5">{config.abierto !== false ? 'Los clientes pueden hacer pedidos.' : 'Los clientes ven un cartel de "cerrado" y no pueden pedir.'}</p>
+                      </div>
+                      <button onClick={toggleLocalAbierto} className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold ${config.abierto !== false ? 'bg-red-600 text-white' : 'bg-green-600 text-white'}`}>
+                        {config.abierto !== false ? 'Cerrar local' : 'Abrir local'}
+                      </button>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-cafe-600 block mb-1">Tiempo estimado de espera (se muestra al cliente)</label>
+                      <input value={tiempoEstimadoInput} onChange={e => setTiempoEstimadoInput(e.target.value)} placeholder="Ej: 30-40 min" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-cafe-600 block mb-1">Logo</label>
+                      <div className="flex items-center gap-3">
+                        {config.logo && <img src={config.logo} className="w-12 h-12 rounded-full object-cover" />}
+                        <label className="bg-cafe-100 text-cafe-700 text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">
+                          Subir logo<input type="file" accept="image/*" onChange={handleLogo} className="hidden" />
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-cafe-600 block mb-1">WhatsApp (solo números, con código de país)</label>
+                      <input value={whatsappInput} onChange={e => setWhatsappInput(e.target.value)} placeholder="5491122334455" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-cafe-600 block mb-1">Instagram (usuario, sin @)</label>
+                      <input value={instagramInput} onChange={e => setInstagramInput(e.target.value)} placeholder="waysty.ar" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-cafe-600 block mb-1">Dirección</label>
+                      <input value={direccionInput} onChange={e => setDireccionInput(e.target.value)} placeholder="Calle 48 2085, ..." className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                    </div>
+                    <div className="border-t border-cafe-100 pt-3">
+                      <p className="text-xs font-bold text-cafe-700 mb-2">Medios de pago</p>
+                      <label className="text-xs font-bold text-cafe-600 block mb-1">Alias para transferencia</label>
+                      <input value={aliasInput} onChange={e => setAliasInput(e.target.value)} placeholder="waysty.mp" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm" />
+                    </div>
+                    <div className="border-t border-cafe-100 pt-3">
+                      <p className="text-xs font-bold text-cafe-700 mb-2">Usuario y contraseña de acceso al admin</p>
+                      <p className="text-[11px] text-cafe-400 mb-2">Usuario actual: <span className="font-bold text-cafe-600">{adminAuth.usuario}</span></p>
+                      <input value={nuevoUsuarioAdmin} onChange={e => setNuevoUsuarioAdmin(e.target.value)} placeholder={`Nuevo usuario (dejar vacío para mantener "${adminAuth.usuario}")`} className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm mb-2" />
+                      <input value={nuevaContrasenaAdmin} onChange={e => setNuevaContrasenaAdmin(e.target.value)} type="password" placeholder="Nueva contraseña (dejar vacía para no cambiarla)" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm mb-2" />
+                      <input value={confirmarContrasenaAdmin} onChange={e => setConfirmarContrasenaAdmin(e.target.value)} type="password" placeholder="Repetir nueva contraseña" className="w-full border border-cafe-200 rounded-xl p-2.5 text-sm mb-2" />
+                      {avisoCredencialesAdmin && <p className={`text-xs mb-2 ${avisoCredencialesAdmin.startsWith('¡Listo') ? 'text-green-600' : 'text-vino-600'}`}>{avisoCredencialesAdmin}</p>}
+                      <button onClick={guardarCredencialesAdmin} className="w-full bg-cafe-100 text-cafe-800 py-2.5 rounded-xl text-sm font-bold">Actualizar usuario y contraseña</button>
+                    </div>
+                    <button onClick={guardarConfig} className="w-full bg-cafe-900 text-bronce-300 py-2.5 rounded-xl text-sm font-bold">Guardar configuración</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
